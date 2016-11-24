@@ -2,18 +2,20 @@ $(document).ready(function () {
     var pollData = null;
     var pollcount = 0;
     
-    $(document).one("click",".ProjectScoreSysOpen",function(){
+    $(document).on("click",".ProjectScoreSysOpen",function(e){
+        e.preventDefault();
+        $(".TrizSystem").fadeOut("slow");
         setTimeout(function () {
 			ProjectScoreSysOpen();
+            $("#ProjectScoreSystem").fadeIn("slow");
 		}, 1000);
     });
     //show current poll list
     function ProjectScoreSysOpen(){
         beforeToDo();
-         //For more details , please look my file voteSystemHandler.js
     }
     
-    $(document).one("click","#poll-abstract",function(){
+    $(document).on("click","#poll-abstract",function(){
         readThePollDetail();
     });
     
@@ -50,6 +52,7 @@ $(document).ready(function () {
     function readThePollList(pollfromwhere){
         if(pollfromwhere == "backtopollabstract"){
             $("#poll-list").fadeIn("slow");
+            $("#countdownToVote").fadeIn("slow");
         }
         else if(pollfromwhere == "HomePage"){
             $("#poll-list").empty();
@@ -99,6 +102,7 @@ $(document).ready(function () {
                 $(document).on("click",".pollclass",function () {
                     var temp = this.id
                     $("#poll-list").fadeOut("slow");
+                    $("#countdownToVote").fadeOut("slow");
                     setTimeout(function() {
                         readThePollDetail(temp);
                     }, 1000);
@@ -108,6 +112,7 @@ $(document).ready(function () {
         }
         else if(pollfromwhere == "isVoted"){
             $("#poll-list").append("<div class='col-sm-12 col-xs-12 alert-danger text-center'>已經投票過了</div>");
+            $("#vote-for").addClass("disabled");
         }
         
     }
@@ -137,19 +142,19 @@ $(document).ready(function () {
         $("#poll-object-detail").append("<div class='table-responsive'><table id='poll-table-seperate' class='table table-bordered table-hover'><thead>");
             $("#poll-table-seperate thead").append("<tr><th>項目</th><th>內容</th></tr>");
             $("#poll-table-seperate").append("</thead><tbody>")
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>產品</td><td>"+pollData[pollDetailCode].poll_product+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>價格</td><td>"+pollData[pollDetailCode].poll_price+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>促銷</td><td>"+pollData[pollDetailCode].poll_promotion+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>通路</td><td>"+pollData[pollDetailCode].poll_place+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>產品策略</td><td>"+pollData[pollDetailCode].poll_product+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>價格策略</td><td>"+pollData[pollDetailCode].poll_price+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>促銷策略</td><td>"+pollData[pollDetailCode].poll_promotion+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>通路策略</td><td>"+pollData[pollDetailCode].poll_place+"</td>"+"</tr>");
             $("#poll-table-seperate tbody").append("<tr>"+"<td>為何做(Why)</td><td>"+pollData[pollDetailCode].poll_why+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>對誰(Who)</td><td>"+pollData[pollDetailCode].poll_who+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>做什麼(What)</td><td>"+pollData[pollDetailCode].poll_what+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>在哪裡(Where)</td><td>"+pollData[pollDetailCode].poll_where+"</td>"+"</tr>");
-            $("#poll-table-seperate tbody").append("<tr>"+"<td>何時做(When)</td><td>"+pollData[pollDetailCode].poll_when+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>客群(Who)</td><td>"+pollData[pollDetailCode].poll_who+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>項目(What)</td><td>"+pollData[pollDetailCode].poll_what+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>販售地點(Where)</td><td>"+pollData[pollDetailCode].poll_where+"</td>"+"</tr>");
+            $("#poll-table-seperate tbody").append("<tr>"+"<td>販售時間(When)</td><td>"+pollData[pollDetailCode].poll_when+"</td>"+"</tr>");
             $("#poll-table-seperate tbody").append("<tr>"+"<td>如何做(How)</td><td>"+pollData[pollDetailCode].poll_how+"</td>"+"</tr>");
             $("#poll-table-seperate tbody").append("<tr>"+"<td>備註</td><td>"+pollData[pollDetailCode].poll_note+"</td>"+"</tr>");
         $("#poll-object-detail").append("</tbody></table></div>");
-        $("#poll-object-detail").append("<button id='back-to-poll-list' class='btn btn-default'>回上頁</button>");
+        $("#poll-object-detail").append("<button id='back-to-poll-list' class='btn btn-default btn-block'>回上頁</button>");
         $("#poll-object-detail").fadeIn("slow");
         $(document).on("click","#back-to-poll-list",function(){
             $("#poll-object-detail").fadeOut("slow");

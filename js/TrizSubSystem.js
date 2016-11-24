@@ -2,28 +2,30 @@
 /*global $, jQuery, alert*/
 $(document).ready(function () {
     "use strict";
-    //manager view hide in the beginning
-    
+    //first loading judgement
+    var HistoryfirstLoading = true;
+    var HighestPollfirstLoading = true;
+    var OtherPollfirstLoading = true;
     //dropdown list dynamically
     console.log(pos);
     if(pos == "主管"){
         $("#personal-dropmenu").append("<li><a id='upload-function' href='#'>上傳案例</a></li>");
         $("#employee_view").remove();
-        chooseSectionToGo();
+        $(document).on("click",".HistorySysOpen",function(e){
+            chooseSectionToGo();
+        });
     }
     else{
         $("#manager_view").remove();
-        AsNormal();
+        $(document).on("click",".HistorySysOpen",function(e){
+            AsNormal();
+        });
     }
     
     //homepage pushstate
     $("#HomeIndex").click(function(e){
         e.preventDefault();
-        
-    })
-    
-    //refresh when back to previous page
-    
+    });
     
     //catch json variable
     var dataJSON = null ;
@@ -35,49 +37,142 @@ $(document).ready(function () {
     });
     $("#HomeIndex").click(function(){
         $(".TrizSystem").fadeOut("slow");
+        $("#employee_view").empty();
+        $("#manager_view").empty();
         setTimeout(function(){ $(".thumbnail").fadeIn("slow"); }, 1000);
     });
     
-    
-    $(".ProjectSupportSysOpen").click(function(e){
-        e.preventDefault();
-        $(".TrizSystem").fadeOut("slow");
-        setTimeout(function(){ $("#ProjectSupportSystem").fadeIn("slow"); }, 1000);
-    });
-    $(".ProjectScoreSysOpen").click(function(e){
-        e.preventDefault();
-        $(".TrizSystem").fadeOut("slow");
-        setTimeout(function(){ $("#ProjectScoreSystem").fadeIn("slow"); }, 1000);
-    });
-    $(".PollSysOpen").click(function(){
-        $(".TrizSystem").fadeOut("slow");
-        setTimeout(function(){ $("#PollSystem").fadeIn("slow"); }, 1000);
-    });
-    
-	$(".ProjectSupportSysOpen").click(function () {
-		setTimeout(function () {
-			ProjectSupportSysOpen();
-		}, 1000);
-	});
-    
-    $(".CreativeOpen").click(function () {
-		setTimeout(function () {
-			CreativeOpen();
-		}, 1000);
-	});
-    
-    //ProjectScoreSysOpen function is in another JS
-    
     //input column add required automantically
-    $("textarea").prop('required',true);
+    $(".require-area").prop('required',true);
     
+    //if user is manager , will do the function below
+    function chooseSectionToGo(){
+        $(".browse_panel").empty();
+        $(".TrizSystem").fadeOut("slow");
+        console.log('do it well');
+        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
+        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="upload_example" class="btn btn-default btn-lg btn-block ViewOrUpload">上傳其他公司案例</button></div>');
+        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
+        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="other_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢提案單</button></div>');
+        $("#manager_view").append('<div class="history-detail container"></div>');
+        $("#manager_view").append('<div class="high-detail container"></div>');
+        $("#manager_view").append('<div class="other-detail container"></div>');
+        $("#HistorySystem").fadeIn("slow");
+        //.one just run code once , .on will run multiple if you click more then one time
+        $(document).on("click","#view_example",function(){
+            console.log('func doing...');
+            $(".ViewOrUpload").fadeOut("slow");
+            $("#manager_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
+            $(".history-detail").empty();
+            setTimeout(function () {
+                if(HistoryfirstLoading){
+                    HistoryBrowse("Homepage");
+                    HistoryfirstLoading = false;
+                }
+                else{
+                    HistoryBrowse("loaded");
+                }
+            }, 1000);
+        });
+        $(document).on("click","#highest_poll",function(){
+            console.log('func doing...');
+            $(".ViewOrUpload").fadeOut("slow");
+            $("#manager_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
+            $(".history-detail").empty();
+            setTimeout(function () {
+                if(HighestPollfirstLoading){
+                    HighestPollBrowse("firstload");
+                    HighestPollfirstLoading = false;
+                }
+                else{
+                    HighestPollBrowse("loaded");
+                }
+            }, 1000);
+        });
+        $(document).on("click","#other_poll",function(){
+            console.log('func doing...');
+            $(".ViewOrUpload").fadeOut("slow");
+            $("#manager_view").append('<div id="man_other_poll" class="other_poll container"></div>');
+            $(".history-detail").empty();
+            setTimeout(function () {
+                if(OtherPollfirstLoading){
+                    OtherPollBrowse("firstload");
+                    OtherPollfirstLoading = false;
+                }
+                else{
+                    OtherPollBrowse("loaded");
+                }
+            }, 1000);
+        });
+    }
     
+    //if user is employee , function will be started
+    function AsNormal(){
+        $(".browse_panel").empty();
+        $(".TrizSystem").fadeOut("slow");
+        $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
+        $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
+        $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="other_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢提案單</button></div>');
+        $("#employee_view").append('<div class="history-detail container"></div>');
+        $("#employee_view").append('<div class="high-detail container"></div>');
+        $("#employee_view").append('<div class="other-detail container"></div>');
+        $("#HistorySystem").fadeIn("slow");
+        $(document).on("click","#view_example",function(){
+            console.log('func doing...');
+            $(".ViewOrUpload").fadeOut("slow");
+            $("#employee_view").append('<div id="emp_browse_panel" class="browse_panel container"></div>');
+            $(".history-detail").empty();
+            $("#loading-message").show();
+            setTimeout(function () {
+                if(HistoryfirstLoading){
+                    HistoryBrowse("Homepage");
+                    HistoryfirstLoading = false;
+                }
+                else{
+                    HistoryBrowse("loaded");
+                }
+            }, 1000);
+        });
+        $(document).on("click","#highest_poll",function(){
+            console.log('func doing...');
+            $(".ViewOrUpload").fadeOut("slow");
+            $("#employee_view").append('<div id="emp_highest_poll" class="highest_poll container"></div>');
+            $(".high-detail").empty();
+            setTimeout(function () {
+                if(HighestPollfirstLoading){
+                    HighestPollBrowse("firstload");
+                    HighestPollfirstLoading = false;
+                }
+                else{
+                    HighestPollBrowse("loaded");
+                }
+            }, 1000);
+        });
+        $(document).on("click","#other_poll",function(){
+            console.log('func doing...');
+            $(".ViewOrUpload").fadeOut("slow");
+            $("#employee_view").append('<div id="emp_other_poll" class="other_poll container"></div>');
+            $(".other-detail").empty();
+            setTimeout(function () {
+                if(OtherPollfirstLoading){
+                    OtherPollBrowse("firstload");
+                    OtherPollfirstLoading = false;
+                }
+                else{
+                    OtherPollBrowse("loaded");
+                }
+            }, 1000);
+        });
+    }
+    
+    //history system function area
     var count = 0;
     var NumOfData = 0;
-    //history system function area
 	function HistoryBrowse(fromwhere) {
         console.log('call HistoryBrowse...');
         if(fromwhere == "Homepage"){
+            $(".browse_panel").empty();
+            $(".browsebtn").empty();
             $.ajax({
                 url: './historyphp/browse.php',
                 type: 'GET',
@@ -87,6 +182,8 @@ $(document).ready(function () {
             //.done will run after AJAX request
             .done(function(data) {
                 dataJSON = data ;
+                $('.browse_panel').append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='browsebtn btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+                $('.browse_panel').append("<div class='col-sm-6 col-xs-6'><button id='refresh_history_data' class='browsebtn btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
                 var url = "";
                 if (NumOfData <= data.length){
                     for(var i=0; i < data.length; i++){
@@ -98,7 +195,7 @@ $(document).ready(function () {
                         }
 
                         if(pos == "MIS管理員" || pos == "主管"){
-                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="panel panel-default test" value='+data[i].ID+'>');
+                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="panel panel-default test" value='+i+'>');
                                 $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
                                     $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
                                     $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
@@ -109,10 +206,9 @@ $(document).ready(function () {
                                     $('#'+data[i].ID+'').append('</div>');
                                 $('#'+data[i].ID+'').append('</div>');
                             $('.browse_panel').append('</div>');
-                            
                         }
                         else{
-                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="test panel panel-default" value='+data[i].ID+'>');
+                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="test panel panel-default" value='+i+'>');
                                 $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
                                     $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
                                     $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
@@ -126,8 +222,8 @@ $(document).ready(function () {
                         }
                     }
                     $(".browse_panel").fadeIn("slow");
-                    NumOfData = data.length
-                   
+                    NumOfData = data.length;
+                    $("#loading-message").hide();
                     console.log("success");
                 }
                 else{
@@ -140,16 +236,22 @@ $(document).ready(function () {
             })
             .always(function() {
                 $(document).on("click",".test",function () {
-                    var temp = this.id
+                    var temp = this.id;
                     $(".browse_panel").fadeOut("slow");
                     setTimeout(function() {
                         HistoryDetail(temp);
                     }, 1000);
                 });
+                $(document).on("click","#back_to_history_select",function () {
+                    $(".browse_panel").fadeOut("slow");
+                    setTimeout(function() {
+                        $(".ViewOrUpload").fadeIn("slow");
+                    }, 1000);
+                });
                 console.log("complete");
             });
         }
-        else if(fromwhere == "fromDetail" || fromwhere == "reloadPage"){
+        else if(fromwhere == "fromDetail" || fromwhere == "reloadPage" || fromwhere == "loaded"){
             $(".browse_panel").fadeIn("slow");
         }
         
@@ -159,9 +261,7 @@ $(document).ready(function () {
     function HistoryDetail(string_value){
         $(".history-detail").empty();
         var getid = string_value;
-        console.log(getid);
-        var detailCode = parseInt(getid) - 1;
-        console.log(detailCode);
+        var detailCode = $("#"+getid).attr("value");
         $(".history-detail").append("<div id='selected-panel' class='panel panel-default'>");
             $("#selected-panel").append("<div class='panel-heading'>" + dataJSON[detailCode].Title + "</div>");
             $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
@@ -170,13 +270,12 @@ $(document).ready(function () {
                     $("#table-seperate tbody").append("<tr>"+"<td>日期</td><td>"+dataJSON[detailCode].Date+"</td>"+"</tr>");
                     $("#table-seperate tbody").append("<tr>"+"<td>公司</td><td>"+dataJSON[detailCode].CompanyName+"</td>"+"</tr>");
                     $("#table-seperate tbody").append("<tr>"+"<td>內容</td><td>"+dataJSON[detailCode].Content+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>網址</td><td>"+dataJSON[detailCode].URL+"</td>"+"</tr>");
                 $("#table-seperate").append("</tbody>");
             $("#selected-panel").append("</table></div>");
             $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
         $(".history-detail").append("</div>");
         $(".history-detail").fadeIn("slow");
-        $(document).one("click","#back-to-history",function () {
+        $(document).on("click","#back-to-history",function () {
             $(".history-detail").fadeOut("slow");
             setTimeout(function() {
                 HistoryBrowse("fromDetail");
@@ -185,52 +284,177 @@ $(document).ready(function () {
         });
     }
     
-    //create support system function area
-    function ProjectSupportSysOpen(){
-        $("#newProjectOrNot").empty();
-        $("#newProjectOrNot").append('<div class="col-xs-12 col-sm-12">是要創建新提案嗎？</div>');
-        $("#newProjectOrNot").append('<div id="newProject" class="col-sm-6 col-xs-12 round-border-style">是</div>');
-        $("#newProjectOrNot").append('<div id="gotoAdjust" class="col-sm-6 col-xs-12 round-border-style">不，請帶我去修改提案區</div>');
-        $("#newProjectOrNot").fadeIn("slow");
-        
+    //POLL HANDLER AREA
+    var getPollJSON = null;
+    function HighestPollBrowse(ajaxrel){
+        if(ajaxrel == "firstload"){
+            $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+            $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+            $.ajax({
+                url: './historyphp/getHighestPoll.php',
+                type: 'GET',
+                datatype: 'json'
+            })
+            .done(function(data){
+                getPollJSON = data;
+                console.log(data.length);
+                if(data != null){
+                    for(var i=0;i<data.length;i++){
+                        $('.highest_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
+                            $('#high-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
+                                $('#high-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
+                                
+                                $('#high-'+data[i].ID+'').append('</div>');
+                            $('#high-'+data[i].ID+'').append('</div>');
+                        $('.highest_poll').append('</div>');
+                    }
+                    console.log('success');
+                }
+                else{
+                    $('.highest_poll').append("NO DATA");
+                }
+            })
+            .fail(function(error){
+                console.log(error);
+            })
+            .always(function(){
+                $(document).on("click",".high-class",function(){
+                    var tempID = this.id;
+                    $(".highest_poll").fadeOut("slow");
+                    setTimeout(function(){
+                        highDetail(tempID);
+                    },1000);
+                });
+                $(document).on("click","#back_to_history_select",function () {
+                    $(".highest_poll").fadeOut("slow");
+                    setTimeout(function() {
+                        $(".ViewOrUpload").fadeIn("slow");
+                    }, 1000);
+                });
+                console.log('AJAX done.');
+            });
+        }
+        else if(ajaxrel == "fromDetail"){
+            $(".highest_poll").fadeIn("slow");
+        }
     }
     
-    //ranking project system function area
-    function chooseSectionToGo(){
-        $(".HistorySysOpen").click(function(e){
-            e.preventDefault();
-            $("#manager_view").empty();
-            $(".TrizSystem").fadeOut("slow");
-            $("#manager_view").append('<div id="view_example" class="ViewOrUpload col-xs-12 col-sm-6 round-border-style">查看案例</div>');
-            $("#manager_view").append('<div id="upload_example" class="ViewOrUpload col-xs-12 col-sm-6 round-border-style">上傳案例</div>');
-            $("#manager_view").append('<div class="history-detail container"></div>');
-            $("#HistorySystem").fadeIn("slow");
-            //.one just run code once , .on will run multiple if you click more then one time
-            $(document).one("click","#view_example",function(){
-                console.log('func doing...');
-                $(".ViewOrUpload").fadeOut("slow");
-                $("#manager_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
-                $(".history-detail").empty();
-                setTimeout(function () {
-                    $(".ViewOrUpload").remove();
-                    HistoryBrowse("Homepage");
-                }, 1000);
+    function OtherPollBrowse(ajaxrel){
+        if(ajaxrel == "firstload"){
+            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+            $.ajax({
+            url: './historyphp/getOtherPoll.php',
+            type: 'GET',
+            datatype: 'json'
+            })
+            .done(function(data){
+                getPollJSON = data;
+                if(data != null){
+                    for(var i=0;i<data.length;i++){
+                        $('.other_poll').append('<div id="other-'+data[i].ID+'" class="panel panel-default other-class" value='+i+'>');
+                            $('#other-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
+                                $('#other-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
+                                
+                                $('#other-'+data[i].ID+'').append('</div>');
+                            $('#other-'+data[i].ID+'').append('</div>');
+                        $('.other_poll').append('</div>');
+                    }
+                    console.log("success");
+                }
+                else{
+                    $('.other_poll').append("NO DATA");
+                    console.log('success');
+                }
+            })
+            .fail(function(error){
+                console.log(error);
+            })
+            .always(function(){
+                $(document).on("click",".other-class",function(){
+                    var tempID = this.id;
+                    $(".other_poll").fadeOut("slow");
+                    setTimeout(function(){
+                        otherDetail(tempID);
+                    },1000);
+                });
+                $(document).on("click","#back_to_history_select",function () {
+                    $(".other_poll").fadeOut("slow");
+                    setTimeout(function() {
+                        $(".ViewOrUpload").fadeIn("slow");
+                    }, 1000);
+                });
+                console.log('AJAX done.');
             });
+        }
+        else if(ajaxrel == "fromDetail"){
+            $(".other_poll").fadeIn("slow");
+        }
+    }
+    
+    function highDetail(strid){
+        $(".high-detail").empty();
+        var getid = strid;
+        var detailCode = $("#"+getid).attr("value");
+        console.log(getid,detailCode);
+        $(".high-detail").append("<div id='selected-panel' class='panel panel-default'>");
+            $("#selected-panel").append("<div class='panel-heading'>獲選之詳細內容</div>");
+            $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
+                $("#table-seperate").append("<thead></thead><tbody>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>編號</td><td>"+getPollJSON[detailCode].ID+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>提案者姓名</td><td>"+getPollJSON[detailCode].Name+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>產品策略</td><td>"+getPollJSON[detailCode].poll_product+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>價格策略</td><td>"+getPollJSON[detailCode].poll_price+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>促銷策略</td><td>"+getPollJSON[detailCode].poll_promotion+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>通路策略</td><td>"+getPollJSON[detailCode].poll_place+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>為何做</td><td>"+getPollJSON[detailCode].poll_why+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>客群</td><td>"+getPollJSON[detailCode].poll_who+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>項目</td><td>"+getPollJSON[detailCode].poll_what+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>販售地點</td><td>"+getPollJSON[detailCode].poll_where+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>販售時間</td><td>"+getPollJSON[detailCode].poll_when+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>如何做</td><td>"+getPollJSON[detailCode].poll_how+"</td>"+"</tr>");
+                $("#table-seperate").append("</tbody>");
+            $("#selected-panel").append("</table></div>");
+            $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
+        $(".high-detail").append("</div>");
+        $(".high-detail").fadeIn("slow");
+        $(document).on("click","#back-to-history",function () {
+            $(".high-detail").fadeOut("slow");
+            setTimeout(function() {
+                HighestPollBrowse("fromDetail");
+            }, 1000);
         });
     }
     
-    function AsNormal(){
-        $(".HistorySysOpen").click(function(e){
-            e.preventDefault();
-            $(".browse_panel").empty();
-            $(".TrizSystem").fadeOut("slow");
-            setTimeout(function(){ 
-                $("#HistorySystem").fadeIn("slow");
-            }, 1000);
-            $(".browse_panel").empty();
-            $(".history-detail").empty();
-            setTimeout(function () {
-                HistoryBrowse("Homepage");
+    function otherDetail(strid){
+        $(".other-detail").empty();
+        var getid = strid;
+        var detailCode = $("#"+getid).attr("value");
+        $(".other-detail").append("<div id='selected-panel' class='panel panel-default'>");
+            $("#selected-panel").append("<div class='panel-heading'>獲選之詳細內容</div>");
+            $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
+                $("#table-seperate").append("<thead></thead><tbody>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>編號</td><td>"+getPollJSON[detailCode].ID+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>提案者姓名</td><td>"+getPollJSON[detailCode].Name+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>產品策略</td><td>"+getPollJSON[detailCode].poll_product+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>價格策略</td><td>"+getPollJSON[detailCode].poll_price+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>促銷策略</td><td>"+getPollJSON[detailCode].poll_promotion+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>通路策略</td><td>"+getPollJSON[detailCode].poll_place+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>為何做</td><td>"+getPollJSON[detailCode].poll_why+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>客群</td><td>"+getPollJSON[detailCode].poll_who+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>項目</td><td>"+getPollJSON[detailCode].poll_what+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>販售地點</td><td>"+getPollJSON[detailCode].poll_where+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>販售時間</td><td>"+getPollJSON[detailCode].poll_when+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>如何做</td><td>"+getPollJSON[detailCode].poll_how+"</td>"+"</tr>");
+                $("#table-seperate").append("</tbody>");
+            $("#selected-panel").append("</table></div>");
+            $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
+        $(".other-detail").append("</div>");
+        $(".other-detail").fadeIn("slow");
+        $(document).on("click","#back-to-history",function () {
+            $(".other-detail").fadeOut("slow");
+            setTimeout(function() {
+                OtherPollBrowse("fromDetail");
             }, 1000);
         });
     }

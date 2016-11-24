@@ -8,10 +8,31 @@ $(document).ready(function () {
     if(day < 10){
         day = "0" + day ;
     }
+    $(".note-area").removeProp("required");
     
-    var currentDate = year + '-' + month + '-' + day
+    var currentDate = year + '-' + month + '-' + day;
     console.log(currentDate);
     $("#define_question").hide();
+    
+    //prepare to do
+    $(".ProjectSupportSysOpen").click(function(e){
+        e.preventDefault();
+        $(".TrizSystem").fadeOut("slow");
+        setTimeout(function(){
+            ProjectSupportSysOpen();
+            $("#ProjectSupportSystem").fadeIn("slow");
+        }, 1000);
+    });
+    
+    //create support system function area
+    function ProjectSupportSysOpen(){
+        $("#newProjectOrNot").empty();
+        $("#newProjectOrNot").append('<div class="col-xs-12 col-sm-12">是要創建新提案嗎？</div>');
+        $("#newProjectOrNot").append('<div id="newProject" class="col-sm-6 col-xs-12 round-border-style">是</div>');
+        $("#newProjectOrNot").append('<div id="gotoAdjust" class="col-sm-6 col-xs-12 round-border-style">不，請帶我去修改提案區</div>');
+        $("#newProjectOrNot").fadeIn("slow");
+        
+    }
     
     //step 1 : new project or not
     $(document).on("click","#newProject",function(){
@@ -32,6 +53,11 @@ $(document).ready(function () {
     
     //step 1-1 : For the person who dont need to new
     
+    $(document).on("click","#BacktoAdjustList",function(){
+        $("#adjustMyProject-detail").fadeOut("slow");
+        $("#adjustMyProject").fadeIn("slow");
+    });
+    
     $(document).on("click","#updateMyPoll",function(){
         var update_product = $("#update_product").val();
         var update_price = $("#update_price").val();
@@ -49,11 +75,11 @@ $(document).ready(function () {
     function adjustList(){
         $("#adjustMyProject").empty();
         $.ajax({
-            url: '../questionphp/getAdjust.php',
+            url: './questionphp/getAdjust.php',
             type: 'GET',
             datatype: 'json',
             beforeSend:function () {
-                console.log("Ready to Send...");
+                $("#adjustMyProject").append("<button id='RefreshTheAdjustList' type='button' class='btn btn-default btn-block'>重新整理</button>");
             }
         })
         .done(function(data){
@@ -67,11 +93,12 @@ $(document).ready(function () {
             }
         })
         .fail(function(){
-            
+            console.log('error');
         })
         .always(function(){
             $(document).on("click",".adjustpoll",function(){
                 var temp = this.id;
+                $("#adjustMyProject").fadeOut("slow");
                 formList(temp);
             });
             console.log('AJAX done.');
@@ -83,58 +110,60 @@ $(document).ready(function () {
         var id = varstring;
         var formValue = $("#"+id).attr('value');
         $("#adjustMyProject-detail").append("<div class='container'>");
+            $("#adjustMyProject-detail .container").append("<button id='BacktoAdjustList' type='button' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>回上一頁</button>");
             $("#adjustMyProject-detail .container").append("<form id='adjust-form' class='form-horizontal'>");
                 $("#adjust-form").append("<legend>行銷4P</legend>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='product'>產品策略</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_product' class='form-control' rows="5" value='"+adjustData[formValue].poll_product+"'></textarea></div>");
+                $("#adjust-form").append("<div id='product_form' class='form-group'>");
+                    $("#adjust-form #product_form").append("<label class='control-label col-sm-2' for='product'>產品策略</label>");
+                    $("#adjust-form #product_form").append("<div class='col-sm-10'><textarea id='update_product' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_product+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='price'>價格策略</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_price' class='form-control' rows="5" value='"+adjustData[formValue].poll_price+"'></textarea></div>");
+                $("#adjust-form").append("<div id='price_form' class='form-group'>");
+                    $("#adjust-form #price_form").append("<label class='control-label col-sm-2' for='price'>價格策略</label>");
+                    $("#adjust-form #price_form").append("<div class='col-sm-10'><textarea id='update_price' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_price+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='promotion'>促銷策略</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_promotion' class='form-control' rows="5" value='"+adjustData[formValue].poll_promotion+"'></textarea></div>");
+                $("#adjust-form").append("<div id='promotion_form' class='form-group'>");
+                    $("#adjust-form #promotion_form").append("<label class='control-label col-sm-2' for='promotion'>促銷策略</label>");
+                    $("#adjust-form #promotion_form").append("<div class='col-sm-10'><textarea id='update_promotion' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_promotion+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='place'>通路策略</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_place' class='form-control' rows="5" value='"+adjustData[formValue].poll_place+"'></textarea></div>");
+                $("#adjust-form").append("<div id='place_form' class='form-group'>");
+                    $("#adjust-form #place_form").append("<label class='control-label col-sm-2' for='place'>通路策略</label>");
+                    $("#adjust-form #place_form").append("<div class='col-sm-10'><textarea id='update_place' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_place+"</textarea></div>");
                 $("#adjust-form").append("</div>");
                 $("#adjust-form").append("<legend>詳細提案內容5W1H</legend>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='five-why'>為何做(Why)</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_five_why' class='form-control' rows="5" value='"+adjustData[formValue].poll_why+"'></textarea></div>");
+                $("#adjust-form").append("<div id='five_why_form' class='form-group'>");
+                    $("#adjust-form #five_why_form").append("<label class='control-label col-sm-2' for='five-why'>為何做(Why)</label>");
+                    $("#adjust-form #five_why_form").append("<div class='col-sm-10'><textarea id='update_five_why' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_why+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='five-who'>對誰(Who)</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_five_who' class='form-control' rows="5" value='"+adjustData[formValue].poll_who+"'></textarea></div>");
+                $("#adjust-form").append("<div id='five_who_form' class='form-group'>");
+                    $("#adjust-form #five_who_form").append("<label class='control-label col-sm-2' for='five-who'>對誰(Who)</label>");
+                    $("#adjust-form #five_who_form").append("<div class='col-sm-10'><textarea id='update_five_who' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_who+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='five-what'>做什麼(What)</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_five_what' class='form-control' rows="5" value='"+adjustData[formValue].poll_what+"'></textarea></div>");
+                $("#adjust-form").append("<div id='five_what_form' class='form-group'>");
+                    $("#adjust-form #five_what_form").append("<label class='control-label col-sm-2' for='five-what'>做什麼(What)</label>");
+                    $("#adjust-form #five_what_form").append("<div class='col-sm-10'><textarea id='update_five_what' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_what+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='five-where'>在哪裡(Where)</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_five_where' class='form-control' rows="5" value='"+adjustData[formValue].poll_where+"'></textarea></div>");
+                $("#adjust-form").append("<div id='five_where_form' class='form-group'>");
+                    $("#adjust-form #five_where_form").append("<label class='control-label col-sm-2' for='five-where'>在哪裡(Where)</label>");
+                    $("#adjust-form #five_where_form").append("<div class='col-sm-10'><textarea id='update_five_where' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_where+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='five-when'>何時做(When)</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_five_when' class='form-control' rows="5" value='"+adjustData[formValue].poll_when+"'></textarea></div>");
+                $("#adjust-form").append("<div id='five_when_form' class='form-group'>");
+                    $("#adjust-form #five_when_form").append("<label class='control-label col-sm-2' for='five-when'>何時做(When)</label>");
+                    $("#adjust-form #five_when_form").append("<div class='col-sm-10'><textarea id='update_five_when' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_when+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='one-how'>如何做(How)</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_one_how' class='form-control' rows="5" value='"+adjustData[formValue].poll_how+"'></textarea></div>");
+                $("#adjust-form").append("<div id='one_how_form' class='form-group'>");
+                    $("#adjust-form #one_how_form").append("<label class='control-label col-sm-2' for='one-how'>如何做(How)</label>");
+                    $("#adjust-form #one_how_form").append("<div class='col-sm-10'><textarea id='update_one_how' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_how+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<label class='control-label col-sm-2' for='note-text'>備註</label>");
-                    $("#adjust-form .form-group").append("<div class='col-sm-10'><textarea id='update_ps_note' class='form-control' rows="5" value='"+adjustData[formValue].poll_note+"'></textarea></div>");
+                $("#adjust-form").append("<div id='ps_note_form' class='form-group'>");
+                    $("#adjust-form #ps_note_form").append("<label class='control-label col-sm-2' for='note-text'>備註</label>");
+                    $("#adjust-form #ps_note_form").append("<div class='col-sm-10'><textarea id='update_ps_note' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_note+"</textarea></div>");
                 $("#adjust-form").append("</div>");
-                $("#adjust-form").append("<div class='form-group'>");
-                    $("#adjust-form .form-group").append("<button id='updateMyPoll' type='button' class='btn btn-default btn-block'>更新</button>");
+                $("#adjust-form").append("<div id='btncol' class='form-group'>");
+                    $("#adjust-form #btncol").append("<button id='updateMyPoll' type='button' class='btn btn-default btn-block'>更新</button>");
                 $("#adjust-form").append("</div>");
             $("#adjustMyProject-detail .container").append("</form>");
         $("#adjustMyProject-detail").append("</div>");
+        $("#adjustMyProject-detail").fadeIn("slow");
     }
     
     //step 2 : need assist or not

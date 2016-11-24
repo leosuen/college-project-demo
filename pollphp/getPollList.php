@@ -4,7 +4,7 @@ include '../inner-database.php';
 
 $today = strtotime("now");
 $start_week = strtotime("last Monday",$today);
-$end_week = strtotime("next Monday",$today);
+$end_week = strtotime("next Tuesday",$today);
 
 $start_week = date("Y-m-d",$start_week);
 $end_week = date("Y-m-d",$end_week);

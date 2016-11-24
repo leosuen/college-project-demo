@@ -21,6 +21,9 @@ $ps_note = $pollData['ps_note'];
 $today = strtotime("now");
 $start_week = strtotime("last Tuesday",$today);
 $end_week = strtotime("next Tuesday",$today);
+if($today == $end_week){
+    $end_week = strtotime("+14 days",$today);
+}
 
 $start_week = date("Y-m-d",$start_week);
 $end_week = date("Y-m-d",$end_week);

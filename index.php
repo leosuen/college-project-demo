@@ -38,12 +38,18 @@
 	<link rel="stylesheet" href="./css/font-awesome.min.css">
 	<link rel="stylesheet" href="./css/w3.css">
 	<link rel="stylesheet" href="./css/radiobutton.css">
+	<link rel="stylesheet" href="./css/countdown.css">
 	<script type="text/javascript" src="./js/TrizSubSystem.js"></script>
 	<script type="text/javascript" src="./js/upload-example.js"></script>
 	<script type="text/javascript" src="./js/pollAssistanceHandler.js"></script>
 	<script type="text/javascript" src="./js/voteSystemHandler.js"></script>
+	<script type="text/javascript" src="./js/dateHandler.js"></script>
+	<script type="text/javascript" src="./js/systemDescription.js"></script>
 	<script>
         var pos = <?php echo json_encode($_SESSION['user_position']) ?>; //IGNORE LEFT WRONG SIGN
+        $(document).ready(function(){
+           $("#loading-message").hide();
+        });
 	</script>
 	
 </head>
@@ -57,7 +63,7 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <a class="navbar-brand" href="file:///D:/wamp64/www/triz-project-demo/index.php" id="HomeIndex">TRIZ輔助用</a>
+	      <a class="navbar-brand" href="file:///D:/wamp64/www/triz-project-demo/index.php" id="HomeIndex">應用TRIZ理論於創造力支援系統</a>
 	    </div>
 	    
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -68,17 +74,15 @@
 	      <ul class="nav navbar-nav navbar-right">
 	      	
 	      	<li class="dropdown">
-	      		<a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $_SESSION['user_session']; ?><span class="caret"></span></a>
-				<ul id="personal-dropmenu" class="dropdown-menu">
-					<li class=""><a href="#">信件</a></li>
-				</ul>
+	      		<a class="dropdown-toggle" data-toggle="dropdown" href="javascript: void(0)"><?php echo $_SESSION['user_session']; ?><span class="caret"></span></a>
 			</li>
 	      	<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#">選單<span class="caret"></span></a>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="javascript: void(0)">選單<span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li class="TrizSysOpen HistorySysOpen"><a href="#">歷史方案庫子系統</a></li>
-					<li class="TrizSysOpen ProjectSupportSysOpen"><a href="#">提案輔助子系統</a></li>
-					<li class="TrizSysOpen ProjectScoreSysOpen"><a href="#">方案評量子系統</a></li>
+					<li class="TrizSysOpen HistorySysOpen"><a href="javascript: void(0)">歷史方案庫子系統</a></li>
+					<li class="TrizSysOpen ProjectSupportSysOpen"><a href="javascript: void(0)">提案輔助子系統</a></li>
+					<li class="TrizSysOpen ProjectScoreSysOpen"><a href="javascript: void(0)">提案評量子系統</a></li>
+					<li class="TrizSysOpen AboutSysOpen"><a href="javascript: void(0)">關於系統</a></li>
 				</ul>
 			</li>
 	      	
@@ -120,14 +124,14 @@
 	        </div>
 		</div>
 	</section>
+	
+	<div id="loading-message" class="container text-center"><i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>載入中...</div>
 
 	<!-- TRIZ SemiSystem1 -->
 	<section id="HistorySystem" class="TrizSystem">
         <div id="manager_view" class="SemiSystem_1 container">
         </div><!-- manager has two options : upload the example or view the example -->
         <div id="employee_view" class="SemiSystem_1 container">
-            <div id="emp_browse_panel" class="browse_panel container"></div>
-            <div class="history-detail container"></div>
         </div><!-- employees can only view the example -->
         
         
@@ -135,6 +139,7 @@
 
 	<!-- TRIZ SemiSystem2 -->
 	<section id="ProjectSupportSystem" class="TrizSystem">
+        <div class="page-controller"></div>
 	    <div id="newProjectOrNot" class="container NewOrAdjust"></div>
 	    <div id="adjustMyProject" class="container NewOrAdjust"></div>
 	    <div id="adjustMyProject-detail"></div>
@@ -161,39 +166,39 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="question_why">為何有問題(Why)</label>
+                    <label class="control-label col-sm-2" for="question_why">為何要做(Why)</label>
                     <div class="col-sm-10">
-                        <textarea id="question_why" class="form-control" rows="5"></textarea>
+                        <textarea id="question_why" class="form-control require-area" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="question_who">哪個項目有問題(Who)</label>
                     <div class="col-sm-10">
-                        <textarea id="question_who" class="form-control" rows="5"></textarea>
+                        <textarea id="question_who" class="form-control require-area" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="question_what">什麼問題(What)</label>
+                    <label class="control-label col-sm-2" for="question_what">有什麼需要改善(What)</label>
                     <div class="col-sm-10">
-                        <textarea id="question_what" class="form-control" rows="5"></textarea>
+                        <textarea id="question_what" class="form-control require-area" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="question_where">哪裡有問題(Where)</label>
+                    <label class="control-label col-sm-2" for="question_where">販售地點(Where)</label>
                     <div class="col-sm-10">
-                        <textarea id="question_where" class="form-control" rows="5"></textarea>
+                        <textarea id="question_where" class="form-control require-area" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2" for="question_when">何時有問題(When)</label>
+                    <label class="control-label col-sm-2" for="question_when">何時發售(When)</label>
                     <div class="col-sm-10">
-                        <textarea id="question_when" class="form-control" rows="5"></textarea>
+                        <textarea id="question_when" class="form-control require-area" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="question_text">備註</label>
                     <div class="col-sm-10">
-                        <textarea id="question_text" class="form-control" rows="5"></textarea>
+                        <textarea id="question_text" class="form-control optional-area" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -210,7 +215,26 @@
 
 	<!-- TRIZ SemiSystem3 -->
 	<section id="ProjectScoreSystem" class="TrizSystem">
-        <div id="countdownToVote" class="container"></div>
+        <div class="page-controller"></div>
+        <div id="countdownToVote" class="container text-center">
+            <h1>距離投票日還有：</h1>
+            <div>
+                <span class="days"></span>
+                <div class="smalltext">天</div>
+            </div>
+            <div>
+                <span class="hours"></span>
+                <div class="smalltext">小時</div>
+            </div>
+            <div>
+                <span class="minutes"></span>
+                <div class="smalltext">分</div>
+            </div>
+            <div>
+                <span class="seconds"></span>
+                <div class="smalltext">秒</div>
+            </div>
+        </div>
 	    <div id="poll-list" class="poll-system container"></div>
 	    <div id="poll-object-detail" class="poll-system container"></div>
 	    <div id="vote-message" class='container'></div>
@@ -262,7 +286,7 @@
 	
 	<!-- TRIZ SemiSystem4 -->
 	<section id="PollSystem" class="TrizSystem">
-        <div id="countdownToVote" class="container"></div>
+        <div class="page-controller"></div>
 	    <div class="container">
 	        <form id="poll_fill" class="form-horizontal">
                 <legend>基本資料</legend>
@@ -288,68 +312,68 @@
 	            <div id="product_message" class="form-group">
 	                <label class="control-label col-sm-2" for="product">產品策略</label>
 	                <div class="col-sm-10">
-	                    <textarea id="product" class="form-control" rows="5"></textarea>
+	                    <textarea id="product" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="price_message" class="form-group">
 	                <label class="control-label col-sm-2" for="price">價格策略</label>
 	                <div class="col-sm-10">
-	                    <textarea id="price" class="form-control" rows="5"></textarea>
+	                    <textarea id="price" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="promotion_message" class="form-group">
 	                <label class="control-label col-sm-2" for="promotion">促銷策略</label>
 	                <div class="col-sm-10">
-	                    <textarea id="promotion" class="form-control" rows="5"></textarea>
+	                    <textarea id="promotion" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="place_message" class="form-group">
 	                <label class="control-label col-sm-2" for="place">通路策略</label>
 	                <div class="col-sm-10">
-	                    <textarea id="place" class="form-control" rows="5"></textarea>
+	                    <textarea id="place" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <legend>詳細提案內容5W1H</legend>
 	            <div id="five_why_message" class="form-group">
 	                <label class="control-label col-sm-2" for="five-why">為何做(Why)</label>
 	                <div class="col-sm-10">
-	                    <textarea id="five_why" class="form-control" rows="5"></textarea>
+	                    <textarea id="five_why" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="five_who_message" class="form-group">
-	                <label class="control-label col-sm-2" for="five-who">對誰(Who)</label>
+	                <label class="control-label col-sm-2" for="five-who">客群(Who)</label>
 	                <div class="col-sm-10">
-	                    <textarea id="five_who" class="form-control" rows="5"></textarea>
+	                    <textarea id="five_who" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="five_what_message" class="form-group">
-	                <label class="control-label col-sm-2" for="five-what">做什麼(What)</label>
+	                <label class="control-label col-sm-2" for="five-what">項目(What)</label>
 	                <div class="col-sm-10">
-	                    <textarea id="five_what" class="form-control" rows="5"></textarea>
+	                    <textarea id="five_what" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="five_where_message" class="form-group">
-	                <label class="control-label col-sm-2" for="five-where">在哪裡(Where)</label>
+	                <label class="control-label col-sm-2" for="five-where">販售地點(Where)</label>
 	                <div class="col-sm-10">
-	                    <textarea id="five_where" class="form-control" rows="5"></textarea>
+	                    <textarea id="five_where" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="five_when_message" class="form-group">
-	                <label class="control-label col-sm-2" for="five-when">何時做(When)</label>
+	                <label class="control-label col-sm-2" for="five-when">販售時間(When)</label>
 	                <div class="col-sm-10">
-	                    <textarea id="five_when" class="form-control" rows="5"></textarea>
+	                    <textarea id="five_when" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="one_how_message" class="form-group">
 	                <label class="control-label col-sm-2" for="one-how">如何做(How)</label>
 	                <div class="col-sm-10">
-	                    <textarea id="one_how" class="form-control" rows="5"></textarea>
+	                    <textarea id="one_how" class="form-control require-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div id="ps_note_message" class="form-group">
 	                <label class="control-label col-sm-2" for="note-text">備註</label>
 	                <div class="col-sm-10">
-	                    <textarea id="ps_note" class="form-control" rows="5"></textarea>
+	                    <textarea id="ps_note" class="form-control optional-area" rows="5"></textarea>
 	                </div>
 	            </div>
 	            <div class="form-group">
@@ -367,7 +391,7 @@
 	<section id="uploadSystem" class="TrizSystem">
         <div id="upload_message" class="container"></div>
         <div class="container">
-           <h2>上傳案例區</h2>
+           <h2>案例區</h2>
             <form class="form-horizontal">
 	            <div class="form-group">
 	                <label class="control-label col-sm-2" for="title">標題</label>
@@ -390,15 +414,10 @@
 	            <div class="form-group">
 	                <label class="control-label col-sm-2" for="companyname">內容</label>
 	                <div class="col-sm-10">
-	                    <input id="upload_content" type="text" class="form-control" name="companyname">
+                        <textarea id="upload_content" class="form-control" rows="5"></textarea>
 	                </div>
 	            </div>
-	            <div class="form-group">
-	                <label class="control-label col-sm-2" for="url">連結</label>
-	                <div class="col-sm-10">
-	                    <input id="upload_url" type="text" class="form-control" name="url" placeholder="EX:www.google.com.tw">
-	                </div>
-	            </div>
+	            
 	            <div class="form-group">
 	                <div class="col-sm-offset-2 col-sm-10">
 	                    <button id="upload_clickbutton" type="submit" class="btn btn-default">送出</button>
@@ -413,7 +432,15 @@
         <div class="container">
             <div class="col-xs-12 col-sm-12">
                 <h1 class="page-header">About this system</h1>
-                Version: Beta 0.10
+                Version: Beta 0.40
+                Changelog:
+                0.40
+                change: some unclear description change
+                0.30
+                debug: the panel show "undefined" when trying get data 
+                0.20
+                add: the highest poll view and other polls view
+                adjust: button position change
             </div>
         </div>
 	</section>

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(document).on("click","#upload-function",function(){
+    $(document).on("click","#upload_example",function(){
         $(".TrizSystem").fadeOut("slow");
         $(".thumbnail").fadeOut("slow");
         setTimeout(function(){ $("#uploadSystem").fadeIn("slow"); }, 1000);
@@ -31,7 +31,7 @@ $(document).ready(function () {
                 "url": url
             }
             $.ajax({
-                url: '../uploadphp/uploadHandler.php',
+                url: './uploadphp/uploadHandler.php',
                 type: 'POST',
                 data: {uploadjson:uploadjson},
                 datatype: 'json',
