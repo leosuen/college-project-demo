@@ -1,9 +1,6 @@
 <?php 
 header('Content-Type: application/json');
 include '../inner-database.php';
-
-sleep(1);
-
 try {
 
     $sql_txt = "SELECT ID, CompanyName , `Date`, Title, Content, URL FROM triz_example";

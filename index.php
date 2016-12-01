@@ -1,15 +1,11 @@
 <?php
 	session_start();
+    $emp = $_SESSION['user_session'];
 
-	if(!isset($_SESSION['user_session']))
+	if(!isset($emp))
 	{
-		sleep(2);
 		header("Location: welcome.php");
 	}
-    if($_SESSION['user_position'] == "MIS管理員"){
-        header("Location: backend.php");
-    }
-    
     
 ?>
 
