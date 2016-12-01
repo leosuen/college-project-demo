@@ -88,6 +88,7 @@ $(document).ready(function () {
                     }
                     pollcount = pollData.length;
                     if(i==pollcount && i != 0){
+                        console.log('add btn');
                         $("#poll-list").append("<div class='col-sm-12 col-xs-12'><button id='vote-for' class='btn btn-default btn-block'>投票</button></div>");
                     }
                 }

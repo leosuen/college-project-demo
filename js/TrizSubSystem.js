@@ -9,18 +9,12 @@ $(document).ready(function () {
     //dropdown list dynamically
     console.log(pos);
     if(pos == "主管"){
-        $("#personal-dropmenu").append("<li><a id='upload-function' href='#'>上傳案例</a></li>");
-        $("#employee_view").remove();
-        $(document).on("click",".HistorySysOpen",function(e){
-            chooseSectionToGo();
-        });
+        
     }
-    else{
-        $("#manager_view").remove();
-        $(document).on("click",".HistorySysOpen",function(e){
-            AsNormal();
-        });
-    }
+    $("#personal-dropmenu").append("<li><a href='./uploadValidation.php'>當選提案審核</a></li>");
+    $(document).on("click",".HistorySysOpen",function(e){
+        chooseSectionToGo();
+    });
     
     //homepage pushstate
     $("#HomeIndex").click(function(e){
@@ -37,32 +31,31 @@ $(document).ready(function () {
     });
     $("#HomeIndex").click(function(){
         $(".TrizSystem").fadeOut("slow");
-        $("#employee_view").empty();
-        $("#manager_view").empty();
+        $("#all_view").empty();
         setTimeout(function(){ $(".thumbnail").fadeIn("slow"); }, 1000);
     });
     
     //input column add required automantically
     $(".require-area").prop('required',true);
     
-    //if user is manager , will do the function below
     function chooseSectionToGo(){
         $(".browse_panel").empty();
         $(".TrizSystem").fadeOut("slow");
         console.log('do it well');
-        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
-        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="upload_example" class="btn btn-default btn-lg btn-block ViewOrUpload">上傳其他公司案例</button></div>');
-        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
-        $("#manager_view").append('<div class="col-xs-12 col-sm-3"><button id="other_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢提案單</button></div>');
-        $("#manager_view").append('<div class="history-detail container"></div>');
-        $("#manager_view").append('<div class="high-detail container"></div>');
-        $("#manager_view").append('<div class="other-detail container"></div>');
+        $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
+        $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="upload_example" class="btn btn-default btn-lg btn-block ViewOrUpload">上傳其他公司案例</button></div>');
+        $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
+        $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="other_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢提案單</button></div>');
+        $("#all_view").append('<div class="history-detail container"></div>');
+        $("#all_view").append('<div class="high-detail container"></div>');
+        $("#all_view").append('<div class="other-detail container"></div>');
         $("#HistorySystem").fadeIn("slow");
         //.one just run code once , .on will run multiple if you click more then one time
         $(document).on("click","#view_example",function(){
             console.log('func doing...');
             $(".ViewOrUpload").fadeOut("slow");
-            $("#manager_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
+            $("#all_view").append('<div id="browse-control" class="container"></div>');
+            $("#all_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
             $(".history-detail").empty();
             setTimeout(function () {
                 if(HistoryfirstLoading){
@@ -77,7 +70,7 @@ $(document).ready(function () {
         $(document).on("click","#highest_poll",function(){
             console.log('func doing...');
             $(".ViewOrUpload").fadeOut("slow");
-            $("#manager_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
+            $("#all_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
             $(".history-detail").empty();
             setTimeout(function () {
                 if(HighestPollfirstLoading){
@@ -92,7 +85,7 @@ $(document).ready(function () {
         $(document).on("click","#other_poll",function(){
             console.log('func doing...');
             $(".ViewOrUpload").fadeOut("slow");
-            $("#manager_view").append('<div id="man_other_poll" class="other_poll container"></div>');
+            $("#all_view").append('<div id="man_other_poll" class="other_poll container"></div>');
             $(".history-detail").empty();
             setTimeout(function () {
                 if(OtherPollfirstLoading){
@@ -106,8 +99,7 @@ $(document).ready(function () {
         });
     }
     
-    //if user is employee , function will be started
-    function AsNormal(){
+    /*function AsNormal(){
         $(".browse_panel").empty();
         $(".TrizSystem").fadeOut("slow");
         $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
@@ -163,16 +155,15 @@ $(document).ready(function () {
                 }
             }, 1000);
         });
-    }
+    }*/
     
     //history system function area
     var count = 0;
     var NumOfData = 0;
 	function HistoryBrowse(fromwhere) {
         console.log('call HistoryBrowse...');
-        if(fromwhere == "Homepage"){
+        if(fromwhere == "Homepage" || fromwhere=="refresh"){
             $(".browse_panel").empty();
-            $(".browsebtn").empty();
             $.ajax({
                 url: './historyphp/browse.php',
                 type: 'GET',
@@ -182,8 +173,9 @@ $(document).ready(function () {
             //.done will run after AJAX request
             .done(function(data) {
                 dataJSON = data ;
-                $('.browse_panel').append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='browsebtn btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-                $('.browse_panel').append("<div class='col-sm-6 col-xs-6'><button id='refresh_history_data' class='browsebtn btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+                $('#browse-control').html("<div class='input-group col-xs-12 col-sm-12'><span class='input-group-addon'><i class='fa fa-search'aria-hidden='true'></i></span><input id='search_title' type='text' class='form-control' aria-describedby='basic-addon1'></div>");
+                $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='browsebtn btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+                $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='refresh_history_data' class='browsebtn btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
                 var url = "";
                 if (NumOfData <= data.length){
                     for(var i=0; i < data.length; i++){
@@ -194,21 +186,8 @@ $(document).ready(function () {
                             url = data[i].URL;
                         }
 
-                        if(pos == "MIS管理員" || pos == "主管"){
-                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="panel panel-default test" value='+i+'>');
-                                $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
-                                    $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
-                                    $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
-                                        $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
-                                        $('#container'+data[i].ID+'').append('<div class="col-xs-4 col-sm-4"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-4 col-sm-4"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>'+'<div class="col-xs-4 col-sm-4"><i class="fa fa-trash-o fa-lg" aria-hidden="true"></i><a href="#">刪除</a></div>');
-                                        $('#footer'+data[i].ID+'').append('</div>');
-                                    $('#'+data[i].ID+'').append('</div>');
-                                    $('#'+data[i].ID+'').append('</div>');
-                                $('#'+data[i].ID+'').append('</div>');
-                            $('.browse_panel').append('</div>');
-                        }
-                        else{
-                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="test panel panel-default" value='+i+'>');
+                        /*if(pos == "MIS管理員" || pos == "主管"){*/
+                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
                                 $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
                                     $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
                                     $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
@@ -219,7 +198,20 @@ $(document).ready(function () {
                                     $('#'+data[i].ID+'').append('</div>');
                                 $('#'+data[i].ID+'').append('</div>');
                             $('.browse_panel').append('</div>');
-                        }
+                        /*}
+                        else{
+                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
+                                $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
+                                    $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
+                                    $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
+                                        $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
+                                        $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
+                                        $('#footer'+data[i].ID+'').append('</div>');
+                                    $('#'+data[i].ID+'').append('</div>');
+                                    $('#'+data[i].ID+'').append('</div>');
+                                $('#'+data[i].ID+'').append('</div>');
+                            $('.browse_panel').append('</div>');
+                        }*/
                     }
                     $(".browse_panel").fadeIn("slow");
                     NumOfData = data.length;
@@ -227,7 +219,7 @@ $(document).ready(function () {
                     console.log("success");
                 }
                 else{
-                    $(".browse_panel").fadeIn("slow");
+                    $(".SemiSystem_1").fadeIn("slow");
                 }
 
             })
@@ -235,18 +227,35 @@ $(document).ready(function () {
                 console.log("error");
             })
             .always(function() {
-                $(document).on("click",".test",function () {
+                $(document).on("click",".browse-class",function () {
                     var temp = this.id;
                     $(".browse_panel").fadeOut("slow");
+                    $("#browse-control").fadeOut("slow");
                     setTimeout(function() {
                         HistoryDetail(temp);
                     }, 1000);
                 });
                 $(document).on("click","#back_to_history_select",function () {
                     $(".browse_panel").fadeOut("slow");
+                    $(".browse-control").fadeOut("slow");
                     setTimeout(function() {
                         $(".ViewOrUpload").fadeIn("slow");
                     }, 1000);
+                });
+                $(document).on("change","#search_title",function () {
+                    var searchVal = this.value;
+                    $(".browse_panel").hide();
+                    setTimeout(function() {
+                        queryTitle(searchVal,"history");
+                    }, 500);
+                });
+                $(document).on("click","#refresh_history_data",function(){
+                    $(".browse_panel").empty();
+                    $(".browse_panel").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                    setTimeout(function() {
+                        $(".browse_panel").empty();
+                        HistoryBrowse("refresh");
+                    }, 2000);
                 });
                 console.log("complete");
             });
@@ -274,11 +283,12 @@ $(document).ready(function () {
             $("#selected-panel").append("</table></div>");
             $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
         $(".history-detail").append("</div>");
-        $(".history-detail").fadeIn("slow");
+        $(".SemiSystem_1").fadeIn("slow");
         $(document).on("click","#back-to-history",function () {
             $(".history-detail").fadeOut("slow");
             setTimeout(function() {
                 HistoryBrowse("fromDetail");
+                $("#browse-control").fadeIn("slow");
                 $(".history-detail").empty();
             }, 1000);
         });
@@ -287,7 +297,7 @@ $(document).ready(function () {
     //POLL HANDLER AREA
     var getPollJSON = null;
     function HighestPollBrowse(ajaxrel){
-        if(ajaxrel == "firstload"){
+        if(ajaxrel == "firstload" || ajaxrel == "refresh"){
             $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
             $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
             $.ajax({
@@ -298,7 +308,7 @@ $(document).ready(function () {
             .done(function(data){
                 getPollJSON = data;
                 console.log(data.length);
-                if(data != null){
+                if(data.length >0){
                     for(var i=0;i<data.length;i++){
                         $('.highest_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
                             $('#high-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
@@ -323,13 +333,21 @@ $(document).ready(function () {
                     $(".highest_poll").fadeOut("slow");
                     setTimeout(function(){
                         highDetail(tempID);
-                    },1000);
+                    }, 1000);
                 });
                 $(document).on("click","#back_to_history_select",function () {
                     $(".highest_poll").fadeOut("slow");
                     setTimeout(function() {
                         $(".ViewOrUpload").fadeIn("slow");
                     }, 1000);
+                });
+                $(document).on("click","#refresh_highestPoll_data",function(){
+                    $(".highest_poll").empty();
+                    $(".highest_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                    setTimeout(function() {
+                        $(".highest_poll").empty();
+                        HighestPollBrowse("refresh");
+                    }, 2000);
                 });
                 console.log('AJAX done.');
             });
@@ -340,13 +358,13 @@ $(document).ready(function () {
     }
     
     function OtherPollBrowse(ajaxrel){
-        if(ajaxrel == "firstload"){
+        if(ajaxrel == "firstload" || ajaxrel == "refresh"){
             $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
             $.ajax({
-            url: './historyphp/getOtherPoll.php',
-            type: 'GET',
-            datatype: 'json'
+                url: './historyphp/getOtherPoll.php',
+                type: 'GET',
+                datatype: 'json'
             })
             .done(function(data){
                 getPollJSON = data;
@@ -383,6 +401,14 @@ $(document).ready(function () {
                     setTimeout(function() {
                         $(".ViewOrUpload").fadeIn("slow");
                     }, 1000);
+                });
+                $(document).on("click","#refresh_OtherPoll_data",function(){
+                    $(".other_poll").empty();
+                    $(".other_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                    setTimeout(function() {
+                        $(".other_poll").empty();
+                        OtherPollBrowse("refresh");
+                    }, 2000);
                 });
                 console.log('AJAX done.');
             });
@@ -457,6 +483,52 @@ $(document).ready(function () {
                 OtherPollBrowse("fromDetail");
             }, 1000);
         });
+    }
+    
+    function queryTitle(strval,strclass){
+        var jsonsender = {"titleVal": strval,"searchClass": strclass};
+        $.ajax({
+            url: './historyphp/searchTitle.php',
+            type: 'POST',
+            data: {pollData:jsonsender},
+            datatype: 'json'
+        })
+        .done(function(data){
+            
+            for(var i=0;i<data.length;i++){
+                $('.browse_panel').empty();
+                $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
+                    $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
+                        $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
+                        $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
+                            $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
+                            $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
+                            $('#footer'+data[i].ID+'').append('</div>');
+                        $('#'+data[i].ID+'').append('</div>');
+                        $('#'+data[i].ID+'').append('</div>');
+                    $('#'+data[i].ID+'').append('</div>');
+                $('.browse_panel').append('</div>');
+                $(".browse_panel").show();
+            }
+        })
+        .fail(function(error){
+            console.log(error);
+        })
+        .always(function(){
+            $(document).on("click",".browse-class",function () {
+                var temp = this.id;
+                $(".browse_panel").fadeOut("slow");
+                setTimeout(function() {
+                    HistoryDetail(temp);
+                }, 1000);
+            });
+            $(document).on("click","#back_to_history_select",function () {
+                $(".browse_panel").fadeOut("slow");
+                setTimeout(function() {
+                    $(".ViewOrUpload").fadeIn("slow");
+                }, 1000);
+            });
+        })
     }
     
 });

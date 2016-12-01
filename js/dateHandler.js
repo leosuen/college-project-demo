@@ -21,17 +21,23 @@ $(document).ready(function(){
         })
         
         .done(function(data) {
-            if(currentDate == data){
-                day = day + 1;
-                currentDate = year + '-' + month + '-' + day
-                deadline_date = currentDate;
+            console.log(data);
+            console.log(data.now , data.nextTuesday);
+            if(data.isTuesday == "true"){
+                console.log('when today is vote day');
+                $("#vote_title").html("距離投票結束還剩：");
+                deadline_date = data.now;
             }
             else{
-                $("#vote-for").addClass("disabled");
-                deadline_date = data;
+                console.log('set btn disabled');
+                setTimeout(function(){
+                    $("#vote-for").attr("disabled","disabled");
+                },1250);
+                
+                deadline_date = data.nextTuesday;
             }
             
-            console.log(deadline_date);
+            console.log('get vote date done');
         })
         .fail(function() {
             console.log("error");
@@ -61,10 +67,7 @@ $(document).ready(function(){
         function updateClock() {
             var t = getTimeRemaining(endtime);
 
-            $("#"+id+" .days").html(t.days);
-            $("#"+id+" .hours").html(('0' + t.hours).slice(-2));
-            $("#"+id+" .minutes").html(('0' + t.minutes).slice(-2));
-            $("#"+id+" .seconds").html(('0' + t.seconds).slice(-2));
+            $("#"+id+" .panel-body").html(t.days + "天" + ('0' + t.hours).slice(-2) + ":" + ('0' + t.minutes).slice(-2) + ":" + ('0' + t.seconds).slice(-2));
 
             if (t.total <= 0) {
               clearInterval(timeinterval);

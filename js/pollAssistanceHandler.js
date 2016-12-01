@@ -1,18 +1,29 @@
 $(document).ready(function () {
     //Global variables
-    var d = new Date();
-    var day = d.getDate();
-    var month = d.getMonth() + 1;
-    var year = d.getFullYear();
-    
-    if(day < 10){
-        day = "0" + day ;
-    }
+    getCurrentDate();
     $(".note-area").removeProp("required");
     
-    var currentDate = year + '-' + month + '-' + day;
+    var currentDate = null;
     console.log(currentDate);
     $("#define_question").hide();
+    
+    function getCurrentDate(){
+        $.ajax({
+            url: "./datephp/getDate.php",
+            type: 'GET',
+            datatype: 'json'
+        })
+        .done(function(data){
+            currentDate = data.now;
+        })
+        .fail(function(error){
+            console.log(error);
+        })
+        .always(function(){
+            $("#question_date").val(currentDate);
+            console.log('AJAX done.');
+        });
+    }
     
     //prepare to do
     $(".ProjectSupportSysOpen").click(function(e){
@@ -285,7 +296,7 @@ $(document).ready(function () {
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product4' class='btn btn-default btn-block'>7.回饋(Feedback)</button>");
                     $("#4p-product-body").append("<div id='product4' class='panel-collapse collapse'>");
                         $("#4p-product-body #product4").append("<ul class='list-group'>");
-                            $("#4p-product-body #product4 .list-group").append("<li>1.採取回饋制度。<br>例如：建立回饋制度是產品策略的一環，客戶投訴和建議制度可以用來改善產品策略。<br>2.若回饋制度已經存在，則改變回饋的大小和方向。<br>例如：從接收客戶回饋改變成回饋給社會，TOMS每賣出一雙鞋，將會提供一雙全新免費的鞋子給需要的孩童(One for One)的方式回饋社會，同時也達到推廣的作用，建立良好的企業形象。</li>");
+                            $("#4p-product-body #product4 .list-group").append("<li>1.採取回饋制度。<br>例如：建立回饋制度是產品策略的一環，客戶投訴和建議制度可以用來改善產品策略。<br>2.若回饋制度已經存在，則改變回饋的大小和方向。<br>例如：從接收客戶回饋改變成回饋給社會，TOMS每賣出一雙鞋，將會提供一雙全新免費的鞋子給需要的孩童(One for One)的方式回饋社會，同時也達到促銷的作用，建立良好的企業形象。</li>");
                     $("#4p-product-body").append("</div>");
                     
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product5' class='btn btn-default btn-block'>8.改變顏色(Color Change)</button>");
@@ -340,29 +351,29 @@ $(document).ready(function () {
             $("#accordion").append("</div>");
         
             $("#accordion").append("<div id='4p-propmotion' class='panel panel-default'>");
-                $("#4p-propmotion").append("<div class='panel-heading text-center' data-toggle='collapse' data-parent='#accordion' href='#4p-promotion-body'>可運用於推廣創新行銷的TRIZ方法");
+                $("#4p-propmotion").append("<div class='panel-heading text-center' data-toggle='collapse' data-parent='#accordion' href='#4p-promotion-body'>可運用於促銷創新行銷的TRIZ方法");
                 $("#4p-propmotion").append("</div>");
         
                 $("#4p-propmotion").append("<div id='4p-promotion-body' class='panel-collapse collapse'>");
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion1' class='btn btn-default btn-block'>1.分割(Segmentation)</button>");
                     $("#4p-promotion-body").append("<div id='promotion1' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion1").append("<ul class='list-group'>");
-                            $("#4p-promotion-body #promotion1 .list-group").append("<li>1.將推廣分割成好幾個部分。<br>例如：Facebook以前在不同用戶的網頁上都發送相同的廣告，後來會將相同的廣告分割成根據不同用戶平常瀏覽網頁喜好的廣告。</li>");
-                            $("#4p-promotion-body #promotion1 .list-group").append("<li>2.增加推廣的分割程度。<br>例如：從Facebook根據不同用戶發送的廣告中，再分割為不同時段或季節發送不同的廣告。</li>");
+                            $("#4p-promotion-body #promotion1 .list-group").append("<li>1.將促銷分割成好幾個部分。<br>例如：Facebook以前在不同用戶的網頁上都發送相同的廣告，後來會將相同的廣告分割成根據不同用戶平常瀏覽網頁喜好的廣告。</li>");
+                            $("#4p-promotion-body #promotion1 .list-group").append("<li>2.增加促銷的分割程度。<br>例如：從Facebook根據不同用戶發送的廣告中，再分割為不同時段或季節發送不同的廣告。</li>");
                         $("#4p-promotion-body #promotion1").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
         
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion2' class='btn btn-default btn-block'>2.多重功能(Universality)</button>");
                     $("#4p-promotion-body").append("<div id='promotion2' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion2").append("<ul class='list-group'>");
-                            $("#4p-promotion-body #promotion2 .list-group").append("<li>1.使推廣有多重功能，以減少對其他推廣的需求。<br>例如：TOMS每賣出一雙鞋，將會提供一雙全新免費的鞋子給需要的孩童(One for One)的推廣策略有多重功能，除了提升銷售業績之外，也提升了企業形象。</li>");
+                            $("#4p-promotion-body #promotion2 .list-group").append("<li>1.使促銷有多重功能，以減少對其他促銷的需求。<br>例如：TOMS每賣出一雙鞋，將會提供一雙全新免費的鞋子給需要的孩童(One for One)的促銷策略有多重功能，除了提升銷售業績之外，也提升了企業形象。</li>");
                         $("#4p-promotion-body #promotion2").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
         
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion3' class='btn btn-default btn-block'>3.預先行動(Prior Action)</button>");
                     $("#4p-promotion-body").append("<div id='promotion3' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion3").append("<ul class='list-group'>");
-                            $("#4p-promotion-body #promotion3 .list-group").append("<li>1.預先導入有用的作用到推廣中。<br>例如：產品上市前先開放預購名額，作為產品上市後推廣的依據。告訴顧客已賣出多少產品，達到廣告的效果。</li>");
+                            $("#4p-promotion-body #promotion3 .list-group").append("<li>1.預先導入有用的作用到促銷中。<br>例如：產品上市前先開放預購名額，作為產品上市後促銷的依據。告訴顧客已賣出多少產品，達到廣告的效果。</li>");
                             $("#4p-promotion-body #promotion3 .list-group").append("<li>2.預先導入有用的作用到通路中。<br>例如：事先與通路商簽約，保障銷售時的通路。</li>");
                         $("#4p-promotion-body #promotion3").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
@@ -370,7 +381,7 @@ $(document).ready(function () {
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion4' class='btn btn-default btn-block'>7.回饋(Feedback)</button>");
                     $("#4p-promotion-body").append("<div id='promotion4' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion4").append("<ul class='list-group'>");
-                            $("#4p-promotion-body #promotion4 .list-group").append("<li>1.採取回饋制度。<br>例如：建立回饋制度是產品策略的一環，客戶投訴和建議制度可以用來改善推廣策略。</li>");
+                            $("#4p-promotion-body #promotion4 .list-group").append("<li>1.採取回饋制度。<br>例如：建立回饋制度是產品策略的一環，客戶投訴和建議制度可以用來改善促銷策略。</li>");
                         $("#4p-promotion-body #promotion4").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
                 $("#4p-propmotion").append("</div>");

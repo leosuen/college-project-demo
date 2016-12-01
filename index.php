@@ -38,7 +38,7 @@
 	<link rel="stylesheet" href="./css/font-awesome.min.css">
 	<link rel="stylesheet" href="./css/w3.css">
 	<link rel="stylesheet" href="./css/radiobutton.css">
-	<link rel="stylesheet" href="./css/countdown.css">
+	<!--<link rel="stylesheet" href="./css/countdown.css">-->
 	<script type="text/javascript" src="./js/TrizSubSystem.js"></script>
 	<script type="text/javascript" src="./js/upload-example.js"></script>
 	<script type="text/javascript" src="./js/pollAssistanceHandler.js"></script>
@@ -75,6 +75,7 @@
 	      	
 	      	<li class="dropdown">
 	      		<a class="dropdown-toggle" data-toggle="dropdown" href="javascript: void(0)"><?php echo $_SESSION['user_session']; ?><span class="caret"></span></a>
+	      		<ul id="personal-dropmenu" class="dropdown-menu"></ul>
 			</li>
 	      	<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="javascript: void(0)">選單<span class="caret"></span></a>
@@ -83,6 +84,7 @@
 					<li class="TrizSysOpen ProjectSupportSysOpen"><a href="javascript: void(0)">提案輔助子系統</a></li>
 					<li class="TrizSysOpen ProjectScoreSysOpen"><a href="javascript: void(0)">提案評量子系統</a></li>
 					<li class="TrizSysOpen AboutSysOpen"><a href="javascript: void(0)">關於系統</a></li>
+					<li class="TrizSysOpen AboutSysOpen"><a href="./votetest.php">測試用</a></li>
 				</ul>
 			</li>
 	      	
@@ -129,12 +131,8 @@
 
 	<!-- TRIZ SemiSystem1 -->
 	<section id="HistorySystem" class="TrizSystem">
-        <div id="manager_view" class="SemiSystem_1 container">
-        </div><!-- manager has two options : upload the example or view the example -->
-        <div id="employee_view" class="SemiSystem_1 container">
-        </div><!-- employees can only view the example -->
-        
-        
+        <div id="all_view" class="SemiSystem_1 container">
+        </div>
 	</section>
 
 	<!-- TRIZ SemiSystem2 -->
@@ -217,22 +215,9 @@
 	<section id="ProjectScoreSystem" class="TrizSystem">
         <div class="page-controller"></div>
         <div id="countdownToVote" class="container text-center">
-            <h1>距離投票日還有：</h1>
-            <div>
-                <span class="days"></span>
-                <div class="smalltext">天</div>
-            </div>
-            <div>
-                <span class="hours"></span>
-                <div class="smalltext">小時</div>
-            </div>
-            <div>
-                <span class="minutes"></span>
-                <div class="smalltext">分</div>
-            </div>
-            <div>
-                <span class="seconds"></span>
-                <div class="smalltext">秒</div>
+            <h1 id="vote_title">距離投票日還有：</h1>
+            <div id="countdown-body" class="panel-body">
+                
             </div>
         </div>
 	    <div id="poll-list" class="poll-system container"></div>
@@ -432,8 +417,15 @@
         <div class="container">
             <div class="col-xs-12 col-sm-12">
                 <h1 class="page-header">About this system</h1>
-                Version: Beta 0.40
+                Version: Beta 0.70
                 Changelog:
+                0.70
+                add: certificate te poll function for manager
+                0.60
+                add: search other company's i.e. function
+                change: something visual style
+                0.50
+                adjust: give some function in some sub-system
                 0.40
                 change: some unclear description change
                 0.30
