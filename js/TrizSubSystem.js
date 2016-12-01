@@ -10,6 +10,7 @@ $(document).ready(function () {
     
     $("#personal-dropmenu").append("<li><a href='./uploadValidation.php'>當選提案審核</a></li>");
     $(document).on("click",".HistorySysOpen",function(e){
+        e.preventDefault();
         chooseSectionToGo();
     });
     
@@ -92,70 +93,10 @@ $(document).ready(function () {
         });
     }
     
-    /*function AsNormal(){
-        $(".browse_panel").empty();
-        $(".TrizSystem").fadeOut("slow");
-        $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
-        $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
-        $("#employee_view").append('<div class="col-xs-12 col-sm-4"><button id="other_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢提案單</button></div>');
-        $("#employee_view").append('<div class="history-detail container"></div>');
-        $("#employee_view").append('<div class="high-detail container"></div>');
-        $("#employee_view").append('<div class="other-detail container"></div>');
-        $("#HistorySystem").fadeIn("slow");
-        $(document).on("click","#view_example",function(){
-            console.log('func doing...');
-            $(".ViewOrUpload").fadeOut("slow");
-            $("#employee_view").append('<div id="emp_browse_panel" class="browse_panel container"></div>');
-            $(".history-detail").empty();
-            $("#loading-message").show();
-            setTimeout(function () {
-                if(HistoryfirstLoading){
-                    HistoryBrowse("Homepage");
-                    HistoryfirstLoading = false;
-                }
-                else{
-                    HistoryBrowse("loaded");
-                }
-            }, 1000);
-        });
-        $(document).on("click","#highest_poll",function(){
-            console.log('func doing...');
-            $(".ViewOrUpload").fadeOut("slow");
-            $("#employee_view").append('<div id="emp_highest_poll" class="highest_poll container"></div>');
-            $(".high-detail").empty();
-            setTimeout(function () {
-                if(HighestPollfirstLoading){
-                    HighestPollBrowse("firstload");
-                    HighestPollfirstLoading = false;
-                }
-                else{
-                    HighestPollBrowse("loaded");
-                }
-            }, 1000);
-        });
-        $(document).on("click","#other_poll",function(){
-            console.log('func doing...');
-            $(".ViewOrUpload").fadeOut("slow");
-            $("#employee_view").append('<div id="emp_other_poll" class="other_poll container"></div>');
-            $(".other-detail").empty();
-            setTimeout(function () {
-                if(OtherPollfirstLoading){
-                    OtherPollBrowse("firstload");
-                    OtherPollfirstLoading = false;
-                }
-                else{
-                    OtherPollBrowse("loaded");
-                }
-            }, 1000);
-        });
-    }*/
-    
     //history system function area
-    var count = 0;
     var NumOfData = 0;
 	function HistoryBrowse(fromwhere) {
-        console.log('call HistoryBrowse...');
-        if(fromwhere == "Homepage" || fromwhere=="refresh"){
+        if(fromwhere === "Homepage" || fromwhere === "refresh"){
             $(".browse_panel").empty();
             $.ajax({
                 url: './historyphp/browse.php',
@@ -172,39 +113,20 @@ $(document).ready(function () {
                 var url = "";
                 if (NumOfData <= data.length){
                     for(var i=0; i < data.length; i++){
-                        if(data[i].URL == null){
-                            url = "無";
+                        if(data[i].URL == null || data[i].URL === ""){
+                            data[i].URL = "無";
                         }
-                        else{
-                            url = data[i].URL;
-                        }
-
-                        /*if(pos == "MIS管理員" || pos == "主管"){*/
-                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
-                                $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
-                                    $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
-                                    $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
-                                        $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
-                                        $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
-                                        $('#footer'+data[i].ID+'').append('</div>');
-                                    $('#'+data[i].ID+'').append('</div>');
-                                    $('#'+data[i].ID+'').append('</div>');
+                        $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
+                            $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
+                                $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
+                                $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
+                                    $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
+                                    $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
+                                    $('#footer'+data[i].ID+'').append('</div>');
                                 $('#'+data[i].ID+'').append('</div>');
-                            $('.browse_panel').append('</div>');
-                        /*}
-                        else{
-                            $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
-                                $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
-                                    $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
-                                    $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
-                                        $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
-                                        $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
-                                        $('#footer'+data[i].ID+'').append('</div>');
-                                    $('#'+data[i].ID+'').append('</div>');
-                                    $('#'+data[i].ID+'').append('</div>');
                                 $('#'+data[i].ID+'').append('</div>');
-                            $('.browse_panel').append('</div>');
-                        }*/
+                            $('#'+data[i].ID+'').append('</div>');
+                        $('.browse_panel').append('</div>');
                     }
                     $(".browse_panel").fadeIn("slow");
                     NumOfData = data.length;
@@ -217,7 +139,10 @@ $(document).ready(function () {
 
             })
             .fail(function(error) {
-                
+                $("html").append("<div id='error-def' class='container'>"+error+"</div>");
+                setTimeout(function() {
+                    $("#error-def").remove();
+                }, 1500);
             })
             .always(function() {
                 $(document).on("click",".browse-class",function () {
@@ -253,11 +178,9 @@ $(document).ready(function () {
                 console.log("complete");
             });
         }
-        else if(fromwhere == "fromDetail" || fromwhere == "reloadPage" || fromwhere == "loaded"){
+        else if(fromwhere === "fromDetail" || fromwhere === "reloadPage" || fromwhere === "loaded"){
             $(".browse_panel").fadeIn("slow");
         }
-        
-        
 	}
     
     function HistoryDetail(string_value){
@@ -290,7 +213,7 @@ $(document).ready(function () {
     //POLL HANDLER AREA
     var getPollJSON = null;
     function HighestPollBrowse(ajaxrel){
-        if(ajaxrel == "firstload" || ajaxrel == "refresh"){
+        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
             $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
             $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
             $.ajax({
@@ -311,14 +234,16 @@ $(document).ready(function () {
                             $('#high-'+data[i].ID+'').append('</div>');
                         $('.highest_poll').append('</div>');
                     }
-                    console.log('success');
                 }
                 else{
                     $('.highest_poll').append("NO DATA");
                 }
             })
             .fail(function(error){
-                console.log(error);
+                $("html").append("<div id='error-def' class='container'>"+error+"</div>");
+                setTimeout(function() {
+                    $("#error-def").remove();
+                }, 1500);
             })
             .always(function(){
                 $(document).on("click",".high-class",function(){
@@ -345,13 +270,13 @@ $(document).ready(function () {
                 console.log('AJAX done.');
             });
         }
-        else if(ajaxrel == "fromDetail"){
+        else if(ajaxrel === "fromDetail"){
             $(".highest_poll").fadeIn("slow");
         }
     }
     
     function OtherPollBrowse(ajaxrel){
-        if(ajaxrel == "firstload" || ajaxrel == "refresh"){
+        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
             $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
             $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
             $.ajax({
@@ -375,11 +300,13 @@ $(document).ready(function () {
                 }
                 else{
                     $('.other_poll').append("NO DATA");
-                    console.log('success');
                 }
             })
             .fail(function(error){
-                console.log(error);
+                $("html").append("<div id='error-def' class='container'>"+error+"</div>");
+                setTimeout(function() {
+                    $("#error-def").remove();
+                }, 1500);
             })
             .always(function(){
                 $(document).on("click",".other-class",function(){
