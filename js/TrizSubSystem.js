@@ -7,10 +7,7 @@ $(document).ready(function () {
     var HighestPollfirstLoading = true;
     var OtherPollfirstLoading = true;
     //dropdown list dynamically
-    console.log(pos);
-    if(pos == "主管"){
-        
-    }
+    
     $("#personal-dropmenu").append("<li><a href='./uploadValidation.php'>當選提案審核</a></li>");
     $(document).on("click",".HistorySysOpen",function(e){
         chooseSectionToGo();
@@ -41,7 +38,6 @@ $(document).ready(function () {
     function chooseSectionToGo(){
         $(".browse_panel").empty();
         $(".TrizSystem").fadeOut("slow");
-        console.log('do it well');
         $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
         $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="upload_example" class="btn btn-default btn-lg btn-block ViewOrUpload">上傳其他公司案例</button></div>');
         $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
@@ -52,7 +48,6 @@ $(document).ready(function () {
         $("#HistorySystem").fadeIn("slow");
         //.one just run code once , .on will run multiple if you click more then one time
         $(document).on("click","#view_example",function(){
-            console.log('func doing...');
             $(".ViewOrUpload").fadeOut("slow");
             $("#all_view").append('<div id="browse-control" class="container"></div>');
             $("#all_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
@@ -68,7 +63,6 @@ $(document).ready(function () {
             }, 1000);
         });
         $(document).on("click","#highest_poll",function(){
-            console.log('func doing...');
             $(".ViewOrUpload").fadeOut("slow");
             $("#all_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
             $(".history-detail").empty();
@@ -83,7 +77,6 @@ $(document).ready(function () {
             }, 1000);
         });
         $(document).on("click","#other_poll",function(){
-            console.log('func doing...');
             $(".ViewOrUpload").fadeOut("slow");
             $("#all_view").append('<div id="man_other_poll" class="other_poll container"></div>');
             $(".history-detail").empty();
@@ -223,8 +216,8 @@ $(document).ready(function () {
                 }
 
             })
-            .fail(function() {
-                console.log("error");
+            .fail(function(error) {
+                
             })
             .always(function() {
                 $(document).on("click",".browse-class",function () {
