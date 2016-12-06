@@ -26,7 +26,10 @@ $(document).ready(function(){
             }
         })
         .fail(function(error){
-            console.log(error);
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function(){
             console.log('AJAX done.');
@@ -49,11 +52,10 @@ $(document).ready(function(){
                 type: 'GET',
                 datatype: 'json',
                 beforeSend: function(){
-                    
+                    $("html").append("<div id='before-def' class='alert-info container text-center'>載入中...</div>");
                 }
             })
             .done(function(data){
-                
                 if(data.length == 0){
                     $("#waitToCertificate").html("目前沒有需要審核的提案。");
                 }
@@ -72,9 +74,13 @@ $(document).ready(function(){
                 }
             })
             .fail(function(error){
-                console.log(error);
+                $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+                setTimeout(function() {
+                    $("#error-def").remove();
+                }, 1500);
             })
             .always(function(){
+                $("#before-def").remove();
                 $(document).on("click","#poll-detail",function(){
                     var tempvar = this.value;
                     $("#wait-abs").fadeOut("slow");
@@ -82,7 +88,6 @@ $(document).ready(function(){
                         readThePoll(tempvar);
                     }, 1250);
                 });
-                console.log('AJAX done.');
             });
         }
         

@@ -1,55 +1,33 @@
 $(document).ready(function(){
     var deadline_date = null;
-    var d = new Date();
-    var day = d.getDate();
-    var month = d.getMonth() + 1;
-    var year = d.getFullYear();
-    if(day < 10){
-        day = "0" + day ;
-    }
-    
-    var currentDate = year + '-' + month + '-' + day;
-    $(document).one("click",".ProjectScoreSysOpen",function(){
-        getDatefromphp();
-    });
-    
+    $("div:first").load("navbar.php");
+    getDatefromphp();
     function getDatefromphp(){
         $.ajax({
-            url: './datephp/getDate.php',
+            url: './datephp/testDate.php',
             type: 'GET',
             datatype: 'json'
         })
-        
+
         .done(function(data) {
-            console.log(data);
-            console.log(data.now , data.nextTuesday);
-            if(data.isTuesday == "true"){
-                console.log('when today is vote day');
+            if(data.testTrigger){
                 $("#vote_title").html("距離投票結束還剩：");
-                deadline_date = data.now;
+                deadline_date = data.tomorrow;
             }
-            else{
-                console.log('set btn disabled');
-                setTimeout(function(){
-                    $("#vote-for").attr("disabled","disabled");
-                },1250);
-                
-                deadline_date = data.nextTuesday;
-            }
-            
-            console.log('get vote date done');
         })
         .fail(function() {
-            console.log("error");
+            $("html").append("<div id='error-def' class='container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 3000);
         })
         .always(function() {
-            initializeClock('countdownToVote', deadline_date);
-            console.log("complete");
+            initializeClock('countdown', deadline_date);
         });
     }
-    
+
     function getTimeRemaining(endtime) {
-      var t = Date.parse(endtime) - new Date(Date.parse(new Date()) + 480 * 60 * 1000);
+      var t = Date.parse(endtime) - new Date(Date.parse(new Date()) + 480 * 60 * 1000) ;
       var seconds = Math.floor((t / 1000) % 60);
       var minutes = Math.floor((t / 1000 / 60) % 60);
       var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
@@ -77,6 +55,4 @@ $(document).ready(function(){
         updateClock();
         var timeinterval = setInterval(updateClock, 1000);
     }
-
-    
 })

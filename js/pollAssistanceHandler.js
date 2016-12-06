@@ -194,6 +194,7 @@ $(document).ready(function () {
     function redirectToPollForm(){
         $("#poll_date").val(currentDate);
         $("#PollSystem").fadeIn("slow");
+        $("#poll_fill").fadeIn("slow");
     }
     
     //step 3 : SOP for the person who needs assistance
@@ -201,13 +202,8 @@ $(document).ready(function () {
 
     $("#question-form").submit(function(event){
         event.preventDefault();
-        QuestionSendingScreen();
         QuesstionSendProcedure();
     });
-
-    function QuestionSendingScreen(){
-
-    }
 
     function QuesstionSendProcedure(){
         var name = $("#emp_name").val();
@@ -247,7 +243,6 @@ $(document).ready(function () {
                 $("#question_message").append("<div class='success'>資料傳送完成</div>");
                 setTimeout(function() {
                     $("#question_message").fadeOut("slow");
-                    $("#question_message").empty();
                 }, 1000);
                 AppendTrizList();
                 $("#4p-triz-creative-rules").fadeIn("slow");
@@ -257,10 +252,15 @@ $(document).ready(function () {
             }
         })
         .fail(function() {
-            console.log("error");
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function() {
-            console.log("complete");
+            setTimeout(function() {
+                $("#question_message").empty();
+            }, 3000);
         });
     }
     
@@ -416,6 +416,7 @@ $(document).ready(function () {
             $("#4p-triz-creative-rules").empty();
             $("#poll_date").val(currentDate);
             $("#PollSystem").fadeIn("slow");
+            $("#poll_fill").fadeIn("slow");
         },1000);
     });
     //step 5 : Sending te data to server
@@ -456,7 +457,6 @@ $(document).ready(function () {
             "one_how": one_how,
             "ps_note": ps_note
         };
-        console.log(OKtoSend);
         doTheSendProcedure(OKtoSend);
     });
     
@@ -524,29 +524,30 @@ $(document).ready(function () {
         .done(function(data) {
             if(data == "complete"){
                 $("#poll_fill").fadeOut("slow");
-                $("#transmission-message").append("<div class='success'>資料傳送完成</div>");
+                $("#transmission-message").html("<div class='success'>資料傳送完成</div>");
                 setTimeout(function() {
                     $("#transmission-message").fadeOut("slow");
-                }, 1000);
-                setTimeout(function() {
-                    $("#transmission-message").empty();
-                }, 1000);
-                $(".TrizSystem").fadeOut("slow");
-                $("#triz-menu").fadeIn("slow");
+                }, 1500);
             }
             else if(data == "data is not completely filled"){
-                $("#transmission-message").append("<div class='danger'>資料傳送過程有問題</div>");
+                $("#transmission-message").html("<div class='danger'>資料傳送過程有問題</div>");
             }
         })
         .fail(function() {
-            console.log("error");
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function() {
-            console.log("complete");
+            setTimeout(function() {
+                $("#transmission-message").empty();
+            }, 3000);
+            $(".TrizSystem").fadeOut("slow");
+            $("#triz-menu").fadeIn("slow");
         });
         }else{
-            $("#transmission-message").append("<div class='alert-danger'>OOPS... Someting Went Wrong</div>")
-            console.log("nothing to do...");
+            $("#transmission-message").append("<div class='alert-danger'>OOPS... Someting Went Wrong</div>");
             setTimeout(function() {
                 $("#transmission-message").empty();
             }, 1500);
