@@ -1,6 +1,12 @@
 $(document).ready(function(){
     var deadline_date = null;
     $("div:first").load("navbar.php");
+    $("#ProjectScoreSystem").hide();
+    $(document).on("click",".ProjectScoreSysOpen",function(e){
+        e.preventDefault();
+        $("#triz-menu").fadeOut("slow");
+        $("#ProjectScoreSystem").fadeIn("slow");
+    });
     getDatefromphp();
     function getDatefromphp(){
         $.ajax({

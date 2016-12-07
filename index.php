@@ -80,7 +80,7 @@
 					<li class="TrizSysOpen ProjectSupportSysOpen"><a href="javascript: void(0)">提案輔助子系統</a></li>
 					<li class="TrizSysOpen ProjectScoreSysOpen"><a href="javascript: void(0)">提案評量子系統</a></li>
 					<li class="TrizSysOpen AboutSysOpen"><a href="javascript: void(0)">關於系統</a></li>
-					<li class="TrizSysOpen AboutSysOpen"><a href="./votetest.php">測試用</a></li>
+					<li class="TrizSysOpen ProjectTestSysOpen"><a href="./votetest.php">測試用</a></li>
 				</ul>
 			</li>
 	      	
@@ -239,7 +239,7 @@
                         <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">我要重選</button>
                     </div>
                     <div class="col-xs-6 col-sm-6">
-                        <button id="yes_to_vote" type="button" class="btn btn-default btn-block">確定</button>
+                        <button id="yes_to_vote" type="button" class="btn btn-default btn-block" data-dismiss="modal">確定</button>
                     </div>
                     
                 </div>
@@ -260,6 +260,26 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default btn-block" data-dismiss="modal">點此以繼續...</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="vote-window" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">投票成功</h4>
+                </div>
+                <div class="modal-body">
+                    <p>投票成功</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-xs-12 col-sm-12">
+                        <button id="vote-done" type="button" class="btn btn-default btn-block" data-dismiss="modal">確定</button>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -413,8 +433,10 @@
         <div class="container">
             <div class="col-xs-12 col-sm-12">
                 <h1 class="page-header">About this system</h1>
-                Version: Beta 0.70
+                Version: 1.00
                 Changelog:
+                1.00
+                maybe all of function are correctly to work
                 0.70
                 add: certificate te poll function for manager
                 0.60

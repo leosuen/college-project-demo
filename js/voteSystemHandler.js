@@ -32,29 +32,30 @@ $(document).ready(function () {
         })
         .done(function(data){
             obj = jQuery.parseJSON(data);
-            if(obj.status == "is voted"){
+            if(obj.status === "is voted"){
                 inputValue = "isVoted";
             }
-            else if(obj.status == "not voted"){
+            else if(obj.status === "not voted"){
                 inputValue = "HomePage";
             }
         })
         .fail(function(){
-            console.log("error");
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function(){
-            console.log(inputValue);
             readThePollList(inputValue);
-            console.log("AJAX done.");
         })
     }
     
     function readThePollList(pollfromwhere){
-        if(pollfromwhere == "backtopollabstract"){
+        if(pollfromwhere === "backtopollabstract"){
             $("#poll-list").fadeIn("slow");
             $("#countdownToVote").fadeIn("slow");
         }
-        else if(pollfromwhere == "HomePage"){
+        else if(pollfromwhere === "HomePage"){
             $("#poll-list").empty();
             $.ajax({
                 url: './pollphp/getPollList.php',
@@ -97,7 +98,10 @@ $(document).ready(function () {
                 }
             })
             .fail(function() {
-                console.log("error");
+                $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+                setTimeout(function() {
+                    $("#error-def").remove();
+                }, 1500);
             })
             .always(function() {
                 $(document).on("click",".pollclass",function () {
@@ -111,7 +115,7 @@ $(document).ready(function () {
                 console.log("complete");
             });
         }
-        else if(pollfromwhere == "isVoted"){
+        else if(pollfromwhere === "isVoted"){
             $("#poll-list").append("<div class='col-sm-12 col-xs-12 alert-danger text-center'>已經投票過了</div>");
             $("#vote-for").addClass("disabled");
         }
@@ -132,6 +136,7 @@ $(document).ready(function () {
     
     $(document).on("click","#yes_to_vote",function(){
         var sendval = $('input[name="pollradio"]:checked').val();
+        $("#check_for_vote").modal("hide");
         addVote(sendval);
     })
     
@@ -174,21 +179,22 @@ $(document).ready(function () {
             datatype: 'json'
         })
         .done(function(data){
-            if(data == "complete"){
-                $("#vote-message").append("<div class='alert-success'>投票成功!!!</div>");
-                $("#poll-list").empty();
+            if(data === "complete"){
+                $("#vote-window").modal();
                 setTimeout(function() {
                     $(".TrizSystem").fadeOut("slow");
-                    $("#vote-message").empty();
-                }, 3000);
-                $("#triz-menu").fadeIn("slow");
+                    $("#triz-menu").fadeIn("slow");
+                }, 1000);
             }
         })
         .fail(function(){
-            console.log("error");
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function(){
-            console.log("AJAX done.");
+            $("#poll-list").empty();
         });
     }
 })
