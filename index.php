@@ -1,12 +1,10 @@
 <?php
-	session_start();
-    $emp = $_SESSION['user_session'];
-
-	if(!isset($emp))
-	{
-		header("Location: welcome.php");
-	}
-    
+session_start();
+$emp = $_SESSION['user_session'];
+if(!isset($emp))
+{
+    header("Location: welcome.php");
+}
 ?>
 
 <!DOCTYPE html>

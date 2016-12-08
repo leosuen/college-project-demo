@@ -6,5 +6,5 @@ $tomorrow = new DateTime("tomorrow", new DateTimeZone('ASIA/Taipei'));
 $format_tomorrow = $tomorrow->format('Y-m-d');
 $data_echo = array("tomorrow" => $format_tomorrow,"testTrigger" => "true");
 
-echo json_encode($data_echo);//$date_diff->format('%d Day %h Hours %i Minute %s Seconds');
+echo json_encode($data_echo);
 ?>
