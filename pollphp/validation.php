@@ -7,7 +7,7 @@ try {
     $stmt = $conn -> prepare($sql_valid_query);
     $stmt->execute();
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($data['fk_emp_id'] == $valid_empid){
+    if($data['fk_emp_id'] === $valid_empid || $valid_empid != "admin"){
         $sendback = array('status' => "is voted",'vote_number' => $data['fk_poll_id']);
         echo json_encode($sendback);
     }

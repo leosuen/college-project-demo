@@ -78,7 +78,7 @@ if(!isset($emp))
 					<li class="TrizSysOpen ProjectSupportSysOpen"><a href="javascript: void(0)">提案輔助子系統</a></li>
 					<li class="TrizSysOpen ProjectScoreSysOpen"><a href="javascript: void(0)">提案評量子系統</a></li>
 					<li class="TrizSysOpen AboutSysOpen"><a href="javascript: void(0)">關於系統</a></li>
-					<li class="TrizSysOpen ProjectTestSysOpen"><a href="./votetest.php">測試用</a></li>
+					<li class="TrizSysOpen ProjectTestSysOpen"><a href="./votetest.php">模擬投票頁面</a></li>
 				</ul>
 			</li>
 	      	
