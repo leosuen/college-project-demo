@@ -40,10 +40,13 @@ $(document).ready(function () {
             }
         })
         .fail(function(){
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function(){
             readThePollList(inputValue);
@@ -88,8 +91,7 @@ $(document).ready(function () {
                         $("#poll-list").append("</div>");
                     }
                     pollcount = pollData.length;
-                    if(i==pollcount && i != 0){
-                        console.log('add btn');
+                    if(i === pollcount && i != 0){
                         $("#poll-list").append("<div class='col-sm-12 col-xs-12'><button id='vote-for' class='btn btn-default btn-block'>投票</button></div>");
                     }
                 }
@@ -98,10 +100,13 @@ $(document).ready(function () {
                 }
             })
             .fail(function() {
-                $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
                 setTimeout(function() {
+                    $("#error-def").modal('hide');
                     $("#error-def").remove();
-                }, 1500);
+                }, 3000);
             })
             .always(function() {
                 $(document).on("click",".pollclass",function () {
@@ -112,7 +117,6 @@ $(document).ready(function () {
                         readThePollDetail(temp);
                     }, 1000);
                 });
-                console.log("complete");
             });
         }
         else if(pollfromwhere === "isVoted"){
@@ -126,7 +130,7 @@ $(document).ready(function () {
         $("#testvalue").empty();
         var testval = $('input[name="pollradio"]:checked').val();
         $("#testvalue").append("第"+testval+"個提案");
-        if(testval == null){
+        if(testval === null){
             $("#not_selected").modal();
         }
         else{
@@ -188,10 +192,13 @@ $(document).ready(function () {
             }
         })
         .fail(function(){
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function(){
             $("#poll-list").empty();

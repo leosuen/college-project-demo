@@ -13,8 +13,7 @@ $(document).ready(function(){
             datatype: 'json'
         })
         .done(function(data){
-            console.log(data);
-            if(data == "chosenOne"){
+            if(data === "chosenOne"){
                 getHighestPollbutNotCertificate("firsttime");
             }
             else{
@@ -26,10 +25,13 @@ $(document).ready(function(){
             }
         })
         .fail(function(error){
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function(){
             console.log('AJAX done.');
@@ -41,7 +43,7 @@ $(document).ready(function(){
             getPoll();
             firstload = false;
         }
-        else if(judgeValue == "refreshPage"){
+        else if(judgeValue === "refreshPage"){
             getPoll();
         }
         
@@ -56,11 +58,10 @@ $(document).ready(function(){
                 }
             })
             .done(function(data){
-                if(data.length == 0){
+                if(data.length === 0){
                     $("#waitToCertificate").html("目前沒有需要審核的提案。");
                 }
                 else{
-                    console.log(data.length);
                     JSONcontainer = data;
                     $("#wait-abs").append("<table class='table table-bordered table-hover'>");
                         $("#wait-abs .table").append("<thead></thead>");
@@ -70,7 +71,6 @@ $(document).ready(function(){
                         }
                         $("#wait-abs .table").append("</tbody>");
                     $("#wait-abs").append("</table>");
-                    console.log("success");
                 }
             })
             .fail(function(error){
@@ -155,13 +155,18 @@ $(document).ready(function(){
             data: {postdata:strval}
         })
         .done(function(data){
-            if(data == "complete"){
+            if(data === "complete"){
                 $("#msg_success").modal();
             }
-            console.log('success');
         })
         .fail(function(error){
-            console.log('error');
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
+            setTimeout(function() {
+                $("#error-def").modal('hide');
+                $("#error-def").remove();
+            }, 3000);
         })
         .always(function(){
             console.log('AJAX done.');

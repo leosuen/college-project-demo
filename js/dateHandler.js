@@ -13,7 +13,7 @@ $(document).ready(function(){
         })
         
         .done(function(data) {
-            if(data.isTuesday == "true"){
+            if(data.isTuesday === "true"){
                 console.log('when today is vote day');
                 $("#vote_title").html("距離投票結束還剩：");
                 deadline_date = data.now;
@@ -28,10 +28,13 @@ $(document).ready(function(){
             }
         })
         .fail(function() {
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function() {
             initializeClock('countdownToVote', deadline_date);

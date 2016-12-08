@@ -131,7 +131,6 @@ $(document).ready(function () {
                     $(".browse_panel").fadeIn("slow");
                     NumOfData = data.length;
                     $("#loading-message").hide();
-                    console.log("success");
                 }
                 else{
                     $(".SemiSystem_1").fadeIn("slow");
@@ -139,10 +138,13 @@ $(document).ready(function () {
 
             })
             .fail(function(error) {
-                $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
                 setTimeout(function() {
+                    $("#error-def").modal('hide');
                     $("#error-def").remove();
-                }, 1500);
+                }, 3000);
             })
             .always(function() {
                 $(document).on("click",".browse-class",function () {
@@ -175,7 +177,6 @@ $(document).ready(function () {
                         HistoryBrowse("refresh");
                     }, 2000);
                 });
-                console.log("complete");
             });
         }
         else if(fromwhere === "fromDetail" || fromwhere === "reloadPage" || fromwhere === "loaded"){
@@ -223,7 +224,6 @@ $(document).ready(function () {
             })
             .done(function(data){
                 getPollJSON = data;
-                console.log(data.length);
                 if(data.length >0){
                     for(var i=0;i<data.length;i++){
                         $('.highest_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
@@ -240,10 +240,13 @@ $(document).ready(function () {
                 }
             })
             .fail(function(error){
-                $("html").append("<div id='error-def' class='container'>"+error+"</div>");
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
                 setTimeout(function() {
+                    $("#error-def").modal('hide');
                     $("#error-def").remove();
-                }, 1500);
+                }, 3000);
             })
             .always(function(){
                 $(document).on("click",".high-class",function(){
@@ -267,7 +270,6 @@ $(document).ready(function () {
                         HighestPollBrowse("refresh");
                     }, 2000);
                 });
-                console.log('AJAX done.');
             });
         }
         else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
@@ -291,22 +293,22 @@ $(document).ready(function () {
                         $('.other_poll').append('<div id="other-'+data[i].ID+'" class="panel panel-default other-class" value='+i+'>');
                             $('#other-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
                                 $('#other-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
-                                
-                                $('#other-'+data[i].ID+'').append('</div>');
                             $('#other-'+data[i].ID+'').append('</div>');
                         $('.other_poll').append('</div>');
                     }
-                    console.log("success");
                 }
                 else{
                     $('.other_poll').append("NO DATA");
                 }
             })
             .fail(function(error){
-                $("html").append("<div id='error-def' class='container'>"+error+"</div>");
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
                 setTimeout(function() {
+                    $("#error-def").modal('hide');
                     $("#error-def").remove();
-                }, 1500);
+                }, 3000);
             })
             .always(function(){
                 $(document).on("click",".other-class",function(){
@@ -330,7 +332,6 @@ $(document).ready(function () {
                         OtherPollBrowse("refresh");
                     }, 2000);
                 });
-                console.log('AJAX done.');
             });
         }
         else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
@@ -413,10 +414,13 @@ $(document).ready(function () {
             }
         })
         .fail(function(error){
-            $("html").append("<div id='error-def' class='container alert-danger'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function(){
             $(document).on("click",".browse-class",function () {

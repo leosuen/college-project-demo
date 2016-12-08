@@ -4,7 +4,6 @@ $(document).ready(function () {
     $(".note-area").removeProp("required");
     
     var currentDate = null;
-    console.log(currentDate);
     $("#define_question").hide();
     
     function getCurrentDate(){
@@ -17,11 +16,16 @@ $(document).ready(function () {
             currentDate = data.now;
         })
         .fail(function(error){
-            console.log(error);
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
+            setTimeout(function() {
+                $("#error-def").modal('hide');
+                $("#error-def").remove();
+            }, 3000);
         })
         .always(function(){
             $("#question_date").val(currentDate);
-            console.log('AJAX done.');
         });
     }
     
@@ -206,16 +210,19 @@ $(document).ready(function () {
             }
         }).done(function(data){
             if(data === "complete"){
-                var modal_msg = '<div class="modal fade" id="success-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">修改成功</h4></div><div class="modal-body"><p>投票成功</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後回到首頁</div></div> </div></div></div>'
+                var modal_msg = '<div class="modal fade" id="success-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">修改成功</h4></div><div class="modal-body"><p>修改成功</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後回到首頁</div></div></div></div></div>';
                 $("html").append(modal_msg);
                 $("#success-def").modal('show');
                 window.setTimeout('location.reload()', 3000);
             }
         }).fail(function(error){
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         }).always(function(){
             
         })
@@ -296,10 +303,13 @@ $(document).ready(function () {
             }
         })
         .fail(function() {
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function() {
             setTimeout(function() {
@@ -575,10 +585,13 @@ $(document).ready(function () {
             }
         })
         .fail(function() {
-            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+            $("html").append(modal_msg);
+            $("#error-def").modal('show');
             setTimeout(function() {
+                $("#error-def").modal('hide');
                 $("#error-def").remove();
-            }, 1500);
+            }, 3000);
         })
         .always(function() {
             setTimeout(function() {
