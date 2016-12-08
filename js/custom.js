@@ -27,7 +27,7 @@
   $("#login-form").submit(function() {
   	remove_loading($(this));
 		
-		if(options['useAJAX'] == true)
+		if(options['useAJAX'] === true)
 		{
 			// Dummy AJAX request (Replace this with your AJAX code)
 		  // If you don't want to use AJAX, remove this
@@ -75,7 +75,7 @@
   $("#register-form").submit(function() {
   	remove_loading($(this));
 		
-		if(options['useAJAX'] == true)
+		if(options['useAJAX'] === true)
 		{
 			// Dummy AJAX request (Replace this with your AJAX code)
 		  // If you don't want to use AJAX, remove this
@@ -101,7 +101,7 @@
   $("#forgot-password-form").submit(function() {
   	remove_loading($(this));
 		
-		if(options['useAJAX'] == true)
+		if(options['useAJAX'] === true)
 		{
 			// Dummy AJAX request (Replace this with your AJAX code)
 		  // If you don't want to use AJAX, remove this
@@ -155,7 +155,7 @@
         $("#message").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
       },
       success :  function(response){
-        if(response=="ok"){
+        if(response === "ok"){
           $("#message").html(' &nbsp; Signing In ...');
           setTimeout(' window.location.href = "index.php"; ',1000);
         }

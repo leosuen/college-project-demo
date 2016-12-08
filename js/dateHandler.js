@@ -1,14 +1,6 @@
 $(document).ready(function(){
     var deadline_date = null;
-    var d = new Date();
-    var day = d.getDate();
-    var month = d.getMonth() + 1;
-    var year = d.getFullYear();
-    if(day < 10){
-        day = "0" + day ;
-    }
     
-    var currentDate = year + '-' + month + '-' + day;
     $(document).one("click",".ProjectScoreSysOpen",function(){
         getDatefromphp();
     });
@@ -21,8 +13,6 @@ $(document).ready(function(){
         })
         
         .done(function(data) {
-            console.log(data);
-            console.log(data.now , data.nextTuesday);
             if(data.isTuesday == "true"){
                 console.log('when today is vote day');
                 $("#vote_title").html("距離投票結束還剩：");
@@ -36,15 +26,15 @@ $(document).ready(function(){
                 
                 deadline_date = data.nextTuesday;
             }
-            
-            console.log('get vote date done');
         })
         .fail(function() {
-            console.log("error");
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function() {
             initializeClock('countdownToVote', deadline_date);
-            console.log("complete");
         });
     }
     
