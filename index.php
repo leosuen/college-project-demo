@@ -431,8 +431,10 @@ if(!isset($emp))
         <div class="container">
             <div class="col-xs-12 col-sm-12">
                 <h1 class="page-header">About this system</h1>
-                Version: 1.00
+                Version: 1.01
                 Changelog:
+                1.01
+                add: error message will shown by Moadl style
                 1.00
                 maybe all of function are correctly to work
                 0.70
