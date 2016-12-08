@@ -2,7 +2,6 @@
 session_start();
 header('Content-Type: application/json');
 include '../inner-database.php';
-sleep(1);
 $temp_empquery = $_SESSION['user_session'];
 try {
 

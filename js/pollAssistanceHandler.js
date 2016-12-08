@@ -69,20 +69,6 @@ $(document).ready(function () {
         $("#adjustMyProject").fadeIn("slow");
     });
     
-    $(document).on("click","#updateMyPoll",function(){
-        var update_product = $("#update_product").val();
-        var update_price = $("#update_price").val();
-        var update_promotion = $("#update_promotion").val();
-        var update_place = $("#update_place").val();
-        var update_five_why = $("#update_five_why").val();
-        var update_five_who = $("#update_five_who").val();
-        var update_five_what = $("#update_five_what").val();
-        var update_five_where = $("#update_five_where").val();
-        var update_five_when = $("#update_five_when").val();
-        var update_one_how = $("#update_one_how").val();
-        var update_ps_note = $("#update_ps_note").val();
-    });
-    
     function adjustList(){
         $("#adjustMyProject").empty();
         $.ajax({
@@ -95,16 +81,18 @@ $(document).ready(function () {
         })
         .done(function(data){
             adjustData = data;
-            var i = null;
             var adjustcount = adjustData.length;
             if(adjustcount != null){
-                for(i=0;i<adjustcount;i++){
+                for(var i=0;i<adjustcount;i++){
                     $("#adjustMyProject").append("<div id='adjust"+adjustData[i].ID+"' class='col-xs-12 col-sm-12 round-border-style adjustpoll' value='"+i+"'>第"+adjustData[i].ID+"個提案</div>");
                 }
             }
         })
         .fail(function(){
-            console.log('error');
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
         })
         .always(function(){
             $(document).on("click",".adjustpoll",function(){
@@ -112,7 +100,6 @@ $(document).ready(function () {
                 $("#adjustMyProject").fadeOut("slow");
                 formList(temp);
             });
-            console.log('AJAX done.');
         });
     }
     
@@ -120,6 +107,7 @@ $(document).ready(function () {
         $("#adjustMyProject-detail").empty();
         var id = varstring;
         var formValue = $("#"+id).attr('value');
+        var formid = adjustData[formValue].ID;
         $("#adjustMyProject-detail").append("<div class='container'>");
             $("#adjustMyProject-detail .container").append("<button id='BacktoAdjustList' type='button' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>回上一頁</button>");
             $("#adjustMyProject-detail .container").append("<form id='adjust-form' class='form-horizontal'>");
@@ -146,19 +134,19 @@ $(document).ready(function () {
                     $("#adjust-form #five_why_form").append("<div class='col-sm-10'><textarea id='update_five_why' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_why+"</textarea></div>");
                 $("#adjust-form").append("</div>");
                 $("#adjust-form").append("<div id='five_who_form' class='form-group'>");
-                    $("#adjust-form #five_who_form").append("<label class='control-label col-sm-2' for='five-who'>對誰(Who)</label>");
+                    $("#adjust-form #five_who_form").append("<label class='control-label col-sm-2' for='five-who'>客群(Who)</label>");
                     $("#adjust-form #five_who_form").append("<div class='col-sm-10'><textarea id='update_five_who' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_who+"</textarea></div>");
                 $("#adjust-form").append("</div>");
                 $("#adjust-form").append("<div id='five_what_form' class='form-group'>");
-                    $("#adjust-form #five_what_form").append("<label class='control-label col-sm-2' for='five-what'>做什麼(What)</label>");
+                    $("#adjust-form #five_what_form").append("<label class='control-label col-sm-2' for='five-what'>項目(What)</label>");
                     $("#adjust-form #five_what_form").append("<div class='col-sm-10'><textarea id='update_five_what' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_what+"</textarea></div>");
                 $("#adjust-form").append("</div>");
                 $("#adjust-form").append("<div id='five_where_form' class='form-group'>");
-                    $("#adjust-form #five_where_form").append("<label class='control-label col-sm-2' for='five-where'>在哪裡(Where)</label>");
+                    $("#adjust-form #five_where_form").append("<label class='control-label col-sm-2' for='five-where'>販售地點(Where)</label>");
                     $("#adjust-form #five_where_form").append("<div class='col-sm-10'><textarea id='update_five_where' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_where+"</textarea></div>");
                 $("#adjust-form").append("</div>");
                 $("#adjust-form").append("<div id='five_when_form' class='form-group'>");
-                    $("#adjust-form #five_when_form").append("<label class='control-label col-sm-2' for='five-when'>何時做(When)</label>");
+                    $("#adjust-form #five_when_form").append("<label class='control-label col-sm-2' for='five-when'>販售時間(When)</label>");
                     $("#adjust-form #five_when_form").append("<div class='col-sm-10'><textarea id='update_five_when' class='form-control' rows=5 value=''>"+adjustData[formValue].poll_when+"</textarea></div>");
                 $("#adjust-form").append("</div>");
                 $("#adjust-form").append("<div id='one_how_form' class='form-group'>");
@@ -175,6 +163,63 @@ $(document).ready(function () {
             $("#adjustMyProject-detail .container").append("</form>");
         $("#adjustMyProject-detail").append("</div>");
         $("#adjustMyProject-detail").fadeIn("slow");
+        
+        $(document).on("click","#updateMyPoll",function(){
+            var update_id = formid;
+            var update_product = $("#update_product").val();
+            var update_price = $("#update_price").val();
+            var update_promotion = $("#update_promotion").val();
+            var update_place = $("#update_place").val();
+            var update_five_why = $("#update_five_why").val();
+            var update_five_who = $("#update_five_who").val();
+            var update_five_what = $("#update_five_what").val();
+            var update_five_where = $("#update_five_where").val();
+            var update_five_when = $("#update_five_when").val();
+            var update_one_how = $("#update_one_how").val();
+            var update_ps_note = $("#update_ps_note").val();
+            var updatePollJSON = {
+                "update_id": update_id,
+                "update_product": update_product,
+                "update_price": update_price,
+                "update_promotion": update_promotion,
+                "update_place": update_place,
+                "update_five_why": update_five_why,
+                "update_five_who": update_five_who,
+                "update_five_what": update_five_what,
+                "update_five_where": update_five_where,
+                "update_five_when": update_five_when,
+                "update_one_how": update_one_how,
+                "update_ps_note": update_ps_note
+            };
+            updateMyPoll(updatePollJSON);
+        });
+    }
+    
+    function updateMyPoll(JSONval,formid){
+        $.ajax({
+            url: './pollphp/updatePoll.php',
+            type: 'POST',
+            data: {sendData:JSONval},
+            datatype: 'json',
+            beforeSend:function () {
+                $("#question_message").append("<div class='alert-info'>資料傳送中...</div>");
+            }
+        }).done(function(data){
+            if(data === "complete"){
+                $("html").append("<div id='success-def' class='alert-success container'>更新成功!!</div>");
+                setTimeout(function() {
+                    $("#error-def").remove();
+                }, 1500);
+                window.setTimeout('location.reload()', 2000);
+            }
+        }).fail(function(error){
+            $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
+            setTimeout(function() {
+                $("#error-def").remove();
+            }, 1500);
+        }).always(function(){
+            
+        })
     }
     
     //step 2 : need assist or not
@@ -238,7 +283,7 @@ $(document).ready(function () {
         })
         //.done will run after AJAX request
         .done(function(data) {
-            if(data == "complete"){
+            if(data === "complete"){
                 $("#define_question").fadeOut("slow");
                 $("#question_message").append("<div class='success'>資料傳送完成</div>");
                 setTimeout(function() {
@@ -247,7 +292,7 @@ $(document).ready(function () {
                 AppendTrizList();
                 $("#4p-triz-creative-rules").fadeIn("slow");
             }
-            else if(data == "data is not completely filled"){
+            else if(data === "data is not completely filled"){
                 $("#question_message").append("<div class='danger'>資料傳送過程有問題</div>");
             }
         })
@@ -461,46 +506,43 @@ $(document).ready(function () {
     });
     
     function checkTheFieldsBeforeSend(product,price,promotion,place,five_why,five_who,five_what,five_where,five_when,one_how,ps_note){
-        if(product == "" || price == "" || promotion == "" || place == "" || five_why == "" || five_who == "" || five_what == "" || five_where == "" || five_when == "" || one_how == ""){
+        if(product === "" || price === "" || promotion === "" || place === "" || five_why === "" || five_who === "" || five_what === "" || five_where === "" || five_when === "" || one_how === ""){
             OKtoSend = "NO";
-            if(product == ""){
+            if(product === ""){
                 $("#product_message").addClass("alert-danger");
                 console.log('error1');
             }
-            if(price == ""){
+            if(price === ""){
                 $("#price_message").addClass("alert-danger");
                 console.log('error2');
             }
-            if(promotion == ""){
+            if(promotion === ""){
                 $("#promotion_message").addClass("alert-danger");
                 console.log('error3');
             }
-            if(place == ""){
+            if(place === ""){
                 $("#place_message").addClass("alert-danger");
                 console.log('error4');
             }
-            if(five_why == ""){
+            if(five_why === ""){
                 $("#five_why_message").addClass("alert-danger");
                 console.log('error5');
             }   
-            if(five_who == ""){
+            if(five_who === ""){
                 $("#five_who_message").addClass("alert-danger");
                 console.log('error6');
             }
-            if(five_what == ""){
+            if(five_what === ""){
                 $("#five_what_message").addClass("alert-danger");
             }
-            if(five_where == ""){
+            if(five_where === ""){
                 $("#five_where_message").addClass("alert-danger");
             }
             if(five_when == ""){
                 $("#five_when_message").addClass("alert-danger");
             }
-            if(one_how == ""){
+            if(one_how === ""){
                 $("#one_how_message").addClass("alert-danger");
-            }
-            if(ps_note == ""){
-                $("#ps_note_message").addClass("alert-danger");
             }
         }
         else{
@@ -509,7 +551,7 @@ $(document).ready(function () {
     }
     
     function doTheSendProcedure(OKtoSend){
-        if(OKtoSend == "OK"){
+        if(OKtoSend === "OK"){
             $.ajax({
             url: './pollphp/postPoll.php',
             type: 'POST',
@@ -522,7 +564,7 @@ $(document).ready(function () {
         })
         //.done will run after AJAX request
         .done(function(data) {
-            if(data == "complete"){
+            if(data === "complete"){
                 $("#poll_fill").fadeOut("slow");
                 $("#transmission-message").html("<div class='success'>資料傳送完成</div>");
                 setTimeout(function() {
