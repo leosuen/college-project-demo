@@ -2,7 +2,7 @@
 include "../inner-database.php";
 session_start();
 $temp_empquery = $_SESSION['user_session'];
-$pollData = $_POST['pollData'];
+$pollData = $_POST['updateData'];
 $update_id = $pollData['update_id'];
 $update_product = $pollData['update_product'];
 $update_price = $pollData['update_price'];

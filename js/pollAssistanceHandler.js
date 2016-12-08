@@ -195,22 +195,21 @@ $(document).ready(function () {
         });
     }
     
-    function updateMyPoll(JSONval,formid){
+    function updateMyPoll(JSONval){
         $.ajax({
             url: './pollphp/updatePoll.php',
             type: 'POST',
-            data: {sendData:JSONval},
+            data: {updateData:JSONval},
             datatype: 'json',
             beforeSend:function () {
                 $("#question_message").append("<div class='alert-info'>資料傳送中...</div>");
             }
         }).done(function(data){
             if(data === "complete"){
-                $("html").append("<div id='success-def' class='alert-success container'>更新成功!!</div>");
-                setTimeout(function() {
-                    $("#error-def").remove();
-                }, 1500);
-                window.setTimeout('location.reload()', 2000);
+                var modal_msg = '<div class="modal fade" id="success-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">修改成功</h4></div><div class="modal-body"><p>投票成功</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後回到首頁</div></div> </div></div></div>'
+                $("html").append(modal_msg);
+                $("#success-def").modal('show');
+                window.setTimeout('location.reload()', 3000);
             }
         }).fail(function(error){
             $("html").append("<div id='error-def' class='alert-danger container'>"+error+"</div>");
