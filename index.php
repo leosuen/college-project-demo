@@ -210,9 +210,7 @@ if(!isset($emp))
         <div class="page-controller"></div>
         <div id="countdownToVote" class="container text-center">
             <h1 id="vote_title">距離投票日還有：</h1>
-            <div id="countdown-body" class="panel-body">
-                
-            </div>
+            <div id="countdown-body" class="panel-body"></div>
         </div>
 	    <div id="poll-list" class="poll-system container"></div>
 	    <div id="poll-object-detail" class="poll-system container"></div>

@@ -33,7 +33,7 @@ $(document).ready(function () {
         .done(function(data){
             obj = jQuery.parseJSON(data);
             if(obj.status === "is voted"){
-                inputValue = "isVoted";
+                inputValue = "HomePage";
             }
             else if(obj.status === "not voted"){
                 inputValue = "HomePage";
