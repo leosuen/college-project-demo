@@ -25,10 +25,7 @@ $(document).ready(function () {
         $.ajax({
             url: './pollphp/validation.php',
             type: 'GET',
-            datatype: 'json',
-            beforeSend:function () {
-                console.log("check the employee have been voted yet");
-            }
+            datatype: 'json'
         })
         .done(function(data){
             obj = jQuery.parseJSON(data);
@@ -63,11 +60,7 @@ $(document).ready(function () {
             $.ajax({
                 url: './pollphp/getPollList.php',
                 type: 'GET',
-                datatype: 'json',
-                beforeSend:function () {
-                    console.log("get poll data...");
-                }
-
+                datatype: 'json'
             })
             //.done will run after AJAX request
             .done(function(data) {
@@ -123,7 +116,6 @@ $(document).ready(function () {
             $("#poll-list").append("<div class='col-sm-12 col-xs-12 alert-danger text-center'>已經投票過了</div>");
             $("#vote-for").addClass("disabled");
         }
-        
     }
     
     $(document).on("click","#vote-for",function(){
