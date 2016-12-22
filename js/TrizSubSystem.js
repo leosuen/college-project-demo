@@ -1,7 +1,6 @@
 /*jslint browser: true*/
 /*global $, jQuery, alert*/
 $(document).ready(function () {
-    "use strict";
     //first loading judgement
     var HistoryfirstLoading = true;
     var HighestPollfirstLoading = true;
@@ -47,22 +46,8 @@ $(document).ready(function () {
         $("#all_view").append('<div class="high-detail container"></div>');
         $("#all_view").append('<div class="other-detail container"></div>');
         $("#HistorySystem").fadeIn("slow");
-        //.one just run code once , .on will run multiple if you click more then one time
-        $(document).on("click","#view_example",function(){
-            $(".ViewOrUpload").fadeOut("slow");
-            $("#all_view").append('<div id="browse-control" class="container"></div>');
-            $("#all_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
-            $(".history-detail").empty();
-            setTimeout(function () {
-                if(HistoryfirstLoading){
-                    HistoryBrowse("Homepage");
-                    HistoryfirstLoading = false;
-                }
-                else{
-                    HistoryBrowse("loaded");
-                }
-            }, 1000);
-        });
+        /*history area*/
+        /*highest*/
         $(document).on("click","#highest_poll",function(){
             $(".ViewOrUpload").fadeOut("slow");
             $("#all_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
@@ -77,6 +62,7 @@ $(document).ready(function () {
                 }
             }, 1000);
         });
+        /*other*/
         $(document).on("click","#other_poll",function(){
             $(".ViewOrUpload").fadeOut("slow");
             $("#all_view").append('<div id="man_other_poll" class="other_poll container"></div>');
@@ -94,118 +80,7 @@ $(document).ready(function () {
     }
     
     //history system function area
-    var NumOfData = 0;
-	function HistoryBrowse(fromwhere) {
-        if(fromwhere === "Homepage" || fromwhere === "refresh"){
-            $(".browse_panel").empty();
-            $.ajax({
-                url: './historyphp/browse.php',
-                type: 'GET',
-                datatype: 'json'
-
-            })
-            //.done will run after AJAX request
-            .done(function(data) {
-                dataJSON = data ;
-                $('#browse-control').html("<div class='input-group col-xs-12 col-sm-12'><span class='input-group-addon'><i class='fa fa-search'aria-hidden='true'></i></span><input id='search_title' type='text' class='form-control' aria-describedby='basic-addon1'></div>");
-                $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='browsebtn btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-                $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='refresh_history_data' class='browsebtn btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
-                if (NumOfData <= data.length){
-                    for(var i=0; i < data.length; i++){
-                        $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
-                            $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
-                                $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
-                                $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
-                                    $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
-                                    $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
-                                    $('#footer'+data[i].ID+'').append('</div>');
-                                $('#'+data[i].ID+'').append('</div>');
-                                $('#'+data[i].ID+'').append('</div>');
-                            $('#'+data[i].ID+'').append('</div>');
-                        $('.browse_panel').append('</div>');
-                    }
-                    $(".browse_panel").fadeIn("slow");
-                    NumOfData = data.length;
-                    $("#loading-message").hide();
-                }
-                else{
-                    $(".SemiSystem_1").fadeIn("slow");
-                }
-
-            })
-            .fail(function(error) {
-                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
-                $("html").append(modal_msg);
-                $("#error-def").modal('show');
-                setTimeout(function() {
-                    $("#error-def").modal('hide');
-                    $("#error-def").remove();
-                }, 3000);
-            })
-            .always(function() {
-                $(document).on("click",".browse-class",function () {
-                    var temp = this.id;
-                    $(".browse_panel").fadeOut("slow");
-                    $("#browse-control").fadeOut("slow");
-                    setTimeout(function() {
-                        HistoryDetail(temp);
-                    }, 1000);
-                });
-                $(document).on("click","#back_to_history_select",function () {
-                    $(".browse_panel").fadeOut("slow");
-                    $('#browse-control').fadeOut("slow");
-                    setTimeout(function() {
-                        $(".ViewOrUpload").fadeIn("slow");
-                    }, 1000);
-                });
-                $(document).on("change","#search_title",function () {
-                    var searchVal = this.value;
-                    $(".browse_panel").hide();
-                    setTimeout(function() {
-                        queryTitle(searchVal,"history");
-                    }, 500);
-                });
-                $(document).on("click","#refresh_history_data",function(){
-                    $(".browse_panel").empty();
-                    $(".browse_panel").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
-                    setTimeout(function() {
-                        $(".browse_panel").empty();
-                        HistoryBrowse("refresh");
-                    }, 2000);
-                });
-            });
-        }
-        else if(fromwhere === "fromDetail" || fromwhere === "reloadPage" || fromwhere === "loaded"){
-            $(".browse_panel").fadeIn("slow");
-        }
-	}
     
-    function HistoryDetail(string_value){
-        $(".history-detail").empty();
-        var getid = string_value;
-        var detailCode = $("#"+getid).attr("value");
-        $(".history-detail").append("<div id='selected-panel' class='panel panel-default'>");
-            $("#selected-panel").append("<div class='panel-heading'>" + dataJSON[detailCode].Title + "</div>");
-            $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
-                $("#table-seperate").append("<thead></thead><tbody>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>編號</td><td>"+dataJSON[detailCode].ID+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>日期</td><td>"+dataJSON[detailCode].Date+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>公司</td><td>"+dataJSON[detailCode].CompanyName+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>內容</td><td>"+dataJSON[detailCode].Content+"</td>"+"</tr>");
-                $("#table-seperate").append("</tbody>");
-            $("#selected-panel").append("</table></div>");
-            $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
-        $(".history-detail").append("</div>");
-        $(".SemiSystem_1").fadeIn("slow");
-        $(document).on("click","#back-to-history",function () {
-            $(".history-detail").fadeOut("slow");
-            setTimeout(function() {
-                HistoryBrowse("fromDetail");
-                $("#browse-control").fadeIn("slow");
-                $(".history-detail").empty();
-            }, 1000);
-        });
-    }
     
     //POLL HANDLER AREA
     var getPollJSON = null;
@@ -435,4 +310,134 @@ $(document).ready(function () {
         })
     }
     
+});
+
+$(document).ready(function(){
+    $(document).on("click","#view_example",function(){
+        $(".ViewOrUpload").fadeOut("slow");
+        $("#all_view").append('<div id="browse-control" class="container"></div>');
+        $("#all_view").append('<div id="man_browse_panel" class="browse_panel container"></div>');
+        $(".history-detail").empty();
+        setTimeout(function () {
+            if(HistoryfirstLoading){
+                HistoryBrowse("Homepage");
+                HistoryfirstLoading = false;
+            }
+            else{
+                HistoryBrowse("loaded");
+            }
+        }, 1000);
+    });
+    var NumOfData = 0;
+	function HistoryBrowse(fromwhere) {
+        if(fromwhere === "Homepage" || fromwhere === "refresh"){
+            $(".browse_panel").empty();
+            $.ajax({
+                url: './historyphp/browse.php',
+                type: 'GET',
+                datatype: 'json'
+
+            })
+            //.done will run after AJAX request
+            .done(function(data) {
+                dataJSON = data ;
+                $('#browse-control').html("<div class='input-group col-xs-12 col-sm-12'><span class='input-group-addon'><i class='fa fa-search'aria-hidden='true'></i></span><input id='search_title' type='text' class='form-control' aria-describedby='basic-addon1'></div>");
+                $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='browsebtn btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+                $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='refresh_history_data' class='browsebtn btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+                if (NumOfData <= data.length){
+                    for(var i=0; i < data.length; i++){
+                        $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
+                            $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
+                                $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
+                                $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
+                                    $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
+                                    $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
+                                    $('#footer'+data[i].ID+'').append('</div>');
+                                $('#'+data[i].ID+'').append('</div>');
+                                $('#'+data[i].ID+'').append('</div>');
+                            $('#'+data[i].ID+'').append('</div>');
+                        $('.browse_panel').append('</div>');
+                    }
+                    $(".browse_panel").fadeIn("slow");
+                    NumOfData = data.length;
+                    $("#loading-message").hide();
+                }
+                else{
+                    $(".SemiSystem_1").fadeIn("slow");
+                }
+
+            })
+            .fail(function(error) {
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
+                setTimeout(function() {
+                    $("#error-def").modal('hide');
+                    $("#error-def").remove();
+                }, 3000);
+            })
+            .always(function() {
+                $(document).on("click",".browse-class",function () {
+                    var temp = this.id;
+                    $(".browse_panel").fadeOut("slow");
+                    $("#browse-control").fadeOut("slow");
+                    setTimeout(function() {
+                        HistoryDetail(temp);
+                    }, 1000);
+                });
+                $(document).on("click","#back_to_history_select",function () {
+                    $(".browse_panel").fadeOut("slow");
+                    $('#browse-control').fadeOut("slow");
+                    setTimeout(function() {
+                        $(".ViewOrUpload").fadeIn("slow");
+                    }, 1000);
+                });
+                $(document).on("change","#search_title",function () {
+                    var searchVal = this.value;
+                    $(".browse_panel").hide();
+                    setTimeout(function() {
+                        queryTitle(searchVal,"history");
+                    }, 500);
+                });
+                $(document).on("click","#refresh_history_data",function(){
+                    $(".browse_panel").empty();
+                    $(".browse_panel").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                    setTimeout(function() {
+                        $(".browse_panel").empty();
+                        HistoryBrowse("refresh");
+                    }, 2000);
+                });
+            });
+        }
+        else if(fromwhere === "fromDetail" || fromwhere === "reloadPage" || fromwhere === "loaded"){
+            $(".browse_panel").fadeIn("slow");
+        }
+	}
+    
+    function HistoryDetail(string_value){
+        $(".history-detail").empty();
+        var getid = string_value;
+        var detailCode = $("#"+getid).attr("value");
+        $(".history-detail").append("<div id='selected-panel' class='panel panel-default'>");
+            $("#selected-panel").append("<div class='panel-heading'>" + dataJSON[detailCode].Title + "</div>");
+            $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
+                $("#table-seperate").append("<thead></thead><tbody>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>編號</td><td>"+dataJSON[detailCode].ID+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>日期</td><td>"+dataJSON[detailCode].Date+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>公司</td><td>"+dataJSON[detailCode].CompanyName+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>內容</td><td>"+dataJSON[detailCode].Content+"</td>"+"</tr>");
+                $("#table-seperate").append("</tbody>");
+            $("#selected-panel").append("</table></div>");
+            $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
+        $(".history-detail").append("</div>");
+        $(".SemiSystem_1").fadeIn("slow");
+        $(document).on("click","#back-to-history",function () {
+            $(".history-detail").fadeOut("slow");
+            setTimeout(function() {
+                HistoryBrowse("fromDetail");
+                $("#browse-control").fadeIn("slow");
+                $(".history-detail").empty();
+            }, 1000);
+        });
+    }
 });
