@@ -20,7 +20,7 @@ $(document).ready(function () {
     });
     
     //catch json variable
-    var dataJSON = null ;
+    
     
     $(".TrizSystem").hide();
     $(".TrizSysOpen").click(function(){
@@ -314,6 +314,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function(){
+    var dataJSON = null ;
     $(document).on("click","#view_example",function(){
         $(".ViewOrUpload").fadeOut("slow");
         $("#all_view").append('<div id="browse-control" class="container"></div>');
