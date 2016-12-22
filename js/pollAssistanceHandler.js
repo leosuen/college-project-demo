@@ -541,7 +541,7 @@ $(document).ready(function () {
             if(five_where === ""){
                 $("#five_where_message").addClass("alert-danger");
             }
-            if(five_when == ""){
+            if(five_when === ""){
                 $("#five_when_message").addClass("alert-danger");
             }
             if(one_how === ""){
@@ -574,7 +574,7 @@ $(document).ready(function () {
                     $("#transmission-message").fadeOut("slow");
                 }, 1500);
             }
-            else if(data == "data is not completely filled"){
+            else if(data === "data is not completely filled"){
                 $("#transmission-message").html("<div class='danger'>資料傳送過程有問題</div>");
             }
         })
