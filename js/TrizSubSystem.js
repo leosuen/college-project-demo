@@ -1,10 +1,11 @@
 /*jslint browser: true*/
 /*global $, jQuery, alert*/
+//first loading judgement
+var HistoryfirstLoading = true;
+var HighestPollfirstLoading = true;
+var OtherPollfirstLoading = true;
 $(document).ready(function () {
-    //first loading judgement
-    var HistoryfirstLoading = true;
-    var HighestPollfirstLoading = true;
-    var OtherPollfirstLoading = true;
+    
     //dropdown list dynamically
     
     $("#personal-dropmenu").append("<li><a href='./uploadValidation.php'>當選提案審核</a></li>");
