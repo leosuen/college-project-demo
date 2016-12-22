@@ -6,7 +6,7 @@ $(document).ready(function(){
     
     $("div:first").load("navbar.php");
     
-    function identifyTheHuman(strman){
+    function identifyTheHuman(human){
         $.ajax({
             url: './pollphp/checkHuman.php',
             type: 'GET',
@@ -34,7 +34,7 @@ $(document).ready(function(){
             }, 3000);
         })
         .always(function(){
-            console.log('AJAX done.');
+            
         });
     }
     
@@ -46,7 +46,6 @@ $(document).ready(function(){
         else if(judgeValue === "refreshPage"){
             getPoll();
         }
-        
         function getPoll(){
             $("#waitToCertificate").empty();
             $.ajax({
@@ -145,7 +144,6 @@ $(document).ready(function(){
         setTimeout(function() {
             updateAndPush(certval);
         }, 2500);
-        
     });
     
     function updateAndPush(strval){
@@ -169,7 +167,7 @@ $(document).ready(function(){
             }, 3000);
         })
         .always(function(){
-            console.log('AJAX done.');
+            
         });
     }
 })
