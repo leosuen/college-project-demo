@@ -16,7 +16,7 @@ $(document).ready(function () {
         var companyname = $("#upload_companyname").val();
         var content = $("#upload_content").val();
         var url = $("#upload_url").val();
-        if(title == "" || date == "" || companyname == "" || content == ""){
+        if(title === "" || date === "" || companyname === "" || content === ""){
             $("#upload_message").append("<div class='alert-danger'>有缺填，請補上</div>")
             setTimeout(function(){
                 $("#upload_message").remove();
@@ -37,7 +37,7 @@ $(document).ready(function () {
                 datatype: 'json',
             })
             .done(function(data){
-                if(data == "uploadcomplete"){
+                if(data === "uploadcomplete"){
                     $("#upload_message").append("案例上傳成功");
                     setTimeout(function(){
                         $("#upload_message").remove();
@@ -49,12 +49,6 @@ $(document).ready(function () {
                         $('#upload_url').attr('value') = null;
                     },1000);
                 }
-            })
-            .fail(function(){
-                
-            })
-            .always(function(){
-                console.log('AJAX done.');
             });
         }
     }
