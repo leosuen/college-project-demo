@@ -51,20 +51,7 @@ $(document).ready(function () {
         /*highest*/
         
         /*other*/
-        $(document).on("click","#other_poll",function(){
-            $(".ViewOrUpload").fadeOut("slow");
-            $("#all_view").append('<div id="man_other_poll" class="other_poll container"></div>');
-            $(".history-detail").empty();
-            setTimeout(function () {
-                if(OtherPollfirstLoading){
-                    OtherPollBrowse("firstload");
-                    OtherPollfirstLoading = false;
-                }
-                else{
-                    OtherPollBrowse("loaded");
-                }
-            }, 1000);
-        });
+        
     }
     
     //history system function area
@@ -73,116 +60,7 @@ $(document).ready(function () {
     //POLL HANDLER AREA
     
     //other
-    function OtherPollBrowse(ajaxrel){
-        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
-            $(".other_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
-            $.ajax({
-                url: './historyphp/getOtherPoll.php',
-                type: 'GET',
-                datatype: 'json'
-            })
-            .done(function(data){
-                getPollJSON = data;
-                if(data != null){
-                    for(var i=0;i<data.length;i++){
-                        $('.other_poll').append('<div id="other-'+data[i].ID+'" class="panel panel-default other-class" value='+i+'>');
-                            $('#other-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
-                                $('#other-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
-                            $('#other-'+data[i].ID+'').append('</div>');
-                        $('.other_poll').append('</div>');
-                    }
-                }
-                else{
-                    $('.other_poll').append("NO DATA");
-                }
-            })
-            .fail(function(error){
-                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
-                $("html").append(modal_msg);
-                $("#error-def").modal('show');
-                setTimeout(function() {
-                    $("#error-def").modal('hide');
-                    $("#error-def").remove();
-                }, 3000);
-            })
-            .always(function(){
-                $(document).on("click",".other-class",function(){
-                    var tempID = this.id;
-                    $(".other_poll").fadeOut("slow");
-                    setTimeout(function(){
-                        PollDetail(tempID,"other");
-                    },1000);
-                });
-                $(document).on("click","#back_to_history_select",function () {
-                    $(".other_poll").fadeOut("slow");
-                    setTimeout(function() {
-                        $(".ViewOrUpload").fadeIn("slow");
-                    }, 1000);
-                });
-                $(document).on("click","#refresh_OtherPoll_data",function(){
-                    $(".other_poll").empty();
-                    $(".other_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
-                    setTimeout(function() {
-                        $(".other_poll").empty();
-                        OtherPollBrowse("refresh");
-                    }, 2000);
-                });
-            });
-        }
-        else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
-            $(".other_poll").fadeIn("slow");
-        }
-    }
     
-    function PollDetail(strid,strClass){
-        var getid = strid;
-        var getClass = strClass;
-        var detailCode = $("#"+getid).attr("value");
-        if(getClass === "other"){
-            $(".other-detail").empty();
-            $(".other-detail").append("<div id='selected-panel' class='panel panel-default'>");
-            $(".other-detail").append("</div>");
-            $(".other-detail").fadeIn("slow");
-        }
-        if(getClass === "high"){
-            $(".high-detail").empty();
-            $(".high-detail").append("<div id='selected-panel' class='panel panel-default'>");
-            $(".high-detail").append("</div>");
-            $(".high-detail").fadeIn("slow");
-        }
-            $("#selected-panel").append("<div class='panel-heading'>詳細內容</div>");
-            $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
-                $("#table-seperate").append("<thead></thead><tbody>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>編號</td><td>"+getPollJSON[detailCode].ID+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>提案者姓名</td><td>"+getPollJSON[detailCode].Name+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>產品策略</td><td>"+getPollJSON[detailCode].poll_product+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>價格策略</td><td>"+getPollJSON[detailCode].poll_price+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>促銷策略</td><td>"+getPollJSON[detailCode].poll_promotion+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>通路策略</td><td>"+getPollJSON[detailCode].poll_place+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>為何做</td><td>"+getPollJSON[detailCode].poll_why+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>客群</td><td>"+getPollJSON[detailCode].poll_who+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>項目</td><td>"+getPollJSON[detailCode].poll_what+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>販售地點</td><td>"+getPollJSON[detailCode].poll_where+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>販售時間</td><td>"+getPollJSON[detailCode].poll_when+"</td>"+"</tr>");
-                    $("#table-seperate tbody").append("<tr>"+"<td>如何做</td><td>"+getPollJSON[detailCode].poll_how+"</td>"+"</tr>");
-                $("#table-seperate").append("</tbody>");
-            $("#selected-panel").append("</table></div>");
-            $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
-        
-        
-        $(document).on("click","#back-to-history",function () {
-            $("."+getClass+"-detail").fadeOut("slow");
-            setTimeout(function() {
-                if(getClass === "other"){
-                    OtherPollBrowse("fromDetail");
-                }
-                else if(getClass === "high"){
-                    HighestPollBrowse("fromDetail");
-                }
-            }, 1000);
-        });
-    }
     
     function queryTitle(strval,strclass){
         var jsonsender = {"titleVal": strval,"searchClass": strclass};
@@ -446,5 +324,133 @@ $(document).ready(function(){
         else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
             $(".highest_poll").fadeIn("slow");
         }
+    }
+});
+//other area
+$(document).ready(function(){
+    $(document).on("click","#other_poll",function(){
+        $(".ViewOrUpload").fadeOut("slow");
+        $("#all_view").append('<div id="man_other_poll" class="other_poll container"></div>');
+        $(".history-detail").empty();
+        setTimeout(function () {
+            if(OtherPollfirstLoading){
+                OtherPollBrowse("firstload");
+                OtherPollfirstLoading = false;
+            }
+            else{
+                OtherPollBrowse("loaded");
+            }
+        }, 1000);
+    });
+    var getPollJSON = null;
+    function OtherPollBrowse(ajaxrel){
+        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
+            $(".other_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+            $.ajax({
+                url: './historyphp/getOtherPoll.php',
+                type: 'GET',
+                datatype: 'json'
+            })
+            .done(function(data){
+                getPollJSON = data;
+                if(data != null){
+                    for(var i=0;i<data.length;i++){
+                        $('.other_poll').append('<div id="other-'+data[i].ID+'" class="panel panel-default other-class" value='+i+'>');
+                            $('#other-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
+                                $('#other-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
+                            $('#other-'+data[i].ID+'').append('</div>');
+                        $('.other_poll').append('</div>');
+                    }
+                }
+                else{
+                    $('.other_poll').append("NO DATA");
+                }
+            })
+            .fail(function(error){
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
+                setTimeout(function() {
+                    $("#error-def").modal('hide');
+                    $("#error-def").remove();
+                }, 3000);
+            })
+            .always(function(){
+                $(document).on("click",".other-class",function(){
+                    var tempID = this.id;
+                    $(".other_poll").fadeOut("slow");
+                    setTimeout(function(){
+                        PollDetail(tempID,"other");
+                    },1000);
+                });
+                $(document).on("click","#back_to_history_select",function () {
+                    $(".other_poll").fadeOut("slow");
+                    setTimeout(function() {
+                        $(".ViewOrUpload").fadeIn("slow");
+                    }, 1000);
+                });
+                $(document).on("click","#refresh_OtherPoll_data",function(){
+                    $(".other_poll").empty();
+                    $(".other_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                    setTimeout(function() {
+                        $(".other_poll").empty();
+                        OtherPollBrowse("refresh");
+                    }, 2000);
+                });
+            });
+        }
+        else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
+            $(".other_poll").fadeIn("slow");
+        }
+    }
+    
+    function PollDetail(strid,strClass){
+        var getid = strid;
+        var getClass = strClass;
+        var detailCode = $("#"+getid).attr("value");
+        if(getClass === "other"){
+            $(".other-detail").empty();
+            $(".other-detail").append("<div id='selected-panel' class='panel panel-default'>");
+            $(".other-detail").append("</div>");
+            $(".other-detail").fadeIn("slow");
+        }
+        if(getClass === "high"){
+            $(".high-detail").empty();
+            $(".high-detail").append("<div id='selected-panel' class='panel panel-default'>");
+            $(".high-detail").append("</div>");
+            $(".high-detail").fadeIn("slow");
+        }
+            $("#selected-panel").append("<div class='panel-heading'>詳細內容</div>");
+            $("#selected-panel").append("<div class='panel-body'><table id='table-seperate' class='table table-bordered table-hover'>");
+                $("#table-seperate").append("<thead></thead><tbody>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>編號</td><td>"+getPollJSON[detailCode].ID+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>提案者姓名</td><td>"+getPollJSON[detailCode].Name+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>產品策略</td><td>"+getPollJSON[detailCode].poll_product+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>價格策略</td><td>"+getPollJSON[detailCode].poll_price+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>促銷策略</td><td>"+getPollJSON[detailCode].poll_promotion+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>通路策略</td><td>"+getPollJSON[detailCode].poll_place+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>為何做</td><td>"+getPollJSON[detailCode].poll_why+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>客群</td><td>"+getPollJSON[detailCode].poll_who+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>項目</td><td>"+getPollJSON[detailCode].poll_what+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>販售地點</td><td>"+getPollJSON[detailCode].poll_where+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>販售時間</td><td>"+getPollJSON[detailCode].poll_when+"</td>"+"</tr>");
+                    $("#table-seperate tbody").append("<tr>"+"<td>如何做</td><td>"+getPollJSON[detailCode].poll_how+"</td>"+"</tr>");
+                $("#table-seperate").append("</tbody>");
+            $("#selected-panel").append("</table></div>");
+            $("#selected-panel").append("<div class='panel-footer'>" + "<button id='back-to-history' class='btn btn-default btn-block'>回上頁</button>" + "</div>");
+        
+        
+        $(document).on("click","#back-to-history",function () {
+            $("."+getClass+"-detail").fadeOut("slow");
+            setTimeout(function() {
+                if(getClass === "other"){
+                    OtherPollBrowse("fromDetail");
+                }
+                else if(getClass === "high"){
+                    HighestPollBrowse("fromDetail");
+                }
+            }, 1000);
+        });
     }
 });
