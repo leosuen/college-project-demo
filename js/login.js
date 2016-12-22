@@ -37,8 +37,7 @@ $('document').ready(function()
         $("#btn-login").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
       },
       success :  function(response){
-        if(response=="ok"){
-          /*$("#btn-login").html('<img src="btn-ajax-loader.gif" /> &nbsp; Signing In ...');*/
+        if(response === "ok"){
           setTimeout(' window.location.href = "home.php"; ',4000);
         }
         else{

@@ -14,16 +14,13 @@ $(document).ready(function(){
         
         .done(function(data) {
             if(data.isTuesday === "true"){
-                console.log('when today is vote day');
                 $("#vote_title").html("距離投票結束還剩：");
                 deadline_date = data.now;
             }
             else{
-                console.log('set btn disabled');
                 setTimeout(function(){
                     $("#vote-for").attr("disabled","disabled");
                 },1250);
-                
                 deadline_date = data.nextTuesday;
             }
         })
@@ -57,18 +54,15 @@ $(document).ready(function(){
     }
 
     function initializeClock(id, endtime) {
+        updateClock();
+        var timeinterval = setInterval(updateClock, 1000);
         function updateClock() {
             var t = getTimeRemaining(endtime);
-
             $("#"+id+" .panel-body").html(t.days + "天" + ('0' + t.hours).slice(-2) + ":" + ('0' + t.minutes).slice(-2) + ":" + ('0' + t.seconds).slice(-2));
-
             if (t.total <= 0) {
               clearInterval(timeinterval);
             }
         }
-
-        updateClock();
-        var timeinterval = setInterval(updateClock, 1000);
     }
 
     

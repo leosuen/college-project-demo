@@ -519,27 +519,21 @@ $(document).ready(function () {
             OKtoSend = "NO";
             if(product === ""){
                 $("#product_message").addClass("alert-danger");
-                console.log('error1');
             }
             if(price === ""){
                 $("#price_message").addClass("alert-danger");
-                console.log('error2');
             }
             if(promotion === ""){
                 $("#promotion_message").addClass("alert-danger");
-                console.log('error3');
             }
             if(place === ""){
                 $("#place_message").addClass("alert-danger");
-                console.log('error4');
             }
             if(five_why === ""){
                 $("#five_why_message").addClass("alert-danger");
-                console.log('error5');
             }   
             if(five_who === ""){
                 $("#five_who_message").addClass("alert-danger");
-                console.log('error6');
             }
             if(five_what === ""){
                 $("#five_what_message").addClass("alert-danger");

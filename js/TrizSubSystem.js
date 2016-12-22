@@ -110,12 +110,8 @@ $(document).ready(function () {
                 $('#browse-control').html("<div class='input-group col-xs-12 col-sm-12'><span class='input-group-addon'><i class='fa fa-search'aria-hidden='true'></i></span><input id='search_title' type='text' class='form-control' aria-describedby='basic-addon1'></div>");
                 $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='browsebtn btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
                 $('#browse-control').append("<div class='col-sm-6 col-xs-6'><button id='refresh_history_data' class='browsebtn btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
-                var url = "";
                 if (NumOfData <= data.length){
                     for(var i=0; i < data.length; i++){
-                        if(data[i].URL == null || data[i].URL === ""){
-                            data[i].URL = "無";
-                        }
                         $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
                             $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
                                 $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
