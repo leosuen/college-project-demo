@@ -49,20 +49,7 @@ $(document).ready(function () {
         $("#HistorySystem").fadeIn("slow");
         /*history area*/
         /*highest*/
-        $(document).on("click","#highest_poll",function(){
-            $(".ViewOrUpload").fadeOut("slow");
-            $("#all_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
-            $(".history-detail").empty();
-            setTimeout(function () {
-                if(HighestPollfirstLoading){
-                    HighestPollBrowse("firstload");
-                    HighestPollfirstLoading = false;
-                }
-                else{
-                    HighestPollBrowse("loaded");
-                }
-            }, 1000);
-        });
+        
         /*other*/
         $(document).on("click","#other_poll",function(){
             $(".ViewOrUpload").fadeOut("slow");
@@ -84,71 +71,8 @@ $(document).ready(function () {
     
     
     //POLL HANDLER AREA
-    var getPollJSON = null;
-    function HighestPollBrowse(ajaxrel){
-        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
-            $(".highest_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-            $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
-            $.ajax({
-                url: './historyphp/getHighestPoll.php',
-                type: 'GET',
-                datatype: 'json'
-            })
-            .done(function(data){
-                getPollJSON = data;
-                if(data.length >0){
-                    for(var i=0;i<data.length;i++){
-                        $('.highest_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
-                            $('#high-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
-                                $('#high-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
-                                
-                                $('#high-'+data[i].ID+'').append('</div>');
-                            $('#high-'+data[i].ID+'').append('</div>');
-                        $('.highest_poll').append('</div>');
-                    }
-                }
-                else{
-                    $('.highest_poll').append("NO DATA");
-                }
-            })
-            .fail(function(error){
-                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
-                $("html").append(modal_msg);
-                $("#error-def").modal('show');
-                setTimeout(function() {
-                    $("#error-def").modal('hide');
-                    $("#error-def").remove();
-                }, 3000);
-            })
-            .always(function(){
-                $(document).on("click",".high-class",function(){
-                    var tempID = this.id;
-                    $(".highest_poll").fadeOut("slow");
-                    setTimeout(function(){
-                        PollDetail(tempID,"high");
-                    }, 1000);
-                });
-                $(document).on("click","#back_to_history_select",function () {
-                    $(".highest_poll").fadeOut("slow");
-                    setTimeout(function() {
-                        $(".ViewOrUpload").fadeIn("slow");
-                    }, 1000);
-                });
-                $(document).on("click","#refresh_highestPoll_data",function(){
-                    $(".highest_poll").empty();
-                    $(".highest_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
-                    setTimeout(function() {
-                        $(".highest_poll").empty();
-                        HighestPollBrowse("refresh");
-                    }, 2000);
-                });
-            });
-        }
-        else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
-            $(".highest_poll").fadeIn("slow");
-        }
-    }
     
+    //other
     function OtherPollBrowse(ajaxrel){
         if(ajaxrel === "firstload" || ajaxrel === "refresh"){
             $(".other_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
@@ -312,7 +236,7 @@ $(document).ready(function () {
     }
     
 });
-
+//history area
 $(document).ready(function(){
     var dataJSON = null ;
     $(document).on("click","#view_example",function(){
@@ -441,5 +365,86 @@ $(document).ready(function(){
                 $(".history-detail").empty();
             }, 1000);
         });
+    }
+});
+//high area
+$(document).ready(function(){
+    $(document).on("click","#highest_poll",function(){
+        $(".ViewOrUpload").fadeOut("slow");
+        $("#all_view").append('<div id="man_highest_poll" class="highest_poll container"></div>');
+        $(".history-detail").empty();
+        setTimeout(function () {
+            if(HighestPollfirstLoading){
+                HighestPollBrowse("firstload");
+                HighestPollfirstLoading = false;
+            }
+            else{
+                HighestPollBrowse("loaded");
+            }
+        }, 1000);
+    });
+    var getPollJSON = null;
+    function HighestPollBrowse(ajaxrel){
+        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
+            $(".highest_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+            $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+            $.ajax({
+                url: './historyphp/getHighestPoll.php',
+                type: 'GET',
+                datatype: 'json'
+            })
+            .done(function(data){
+                getPollJSON = data;
+                if(data.length >0){
+                    for(var i=0;i<data.length;i++){
+                        $('.highest_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
+                            $('#high-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
+                                $('#high-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
+                                
+                                $('#high-'+data[i].ID+'').append('</div>');
+                            $('#high-'+data[i].ID+'').append('</div>');
+                        $('.highest_poll').append('</div>');
+                    }
+                }
+                else{
+                    $('.highest_poll').append("NO DATA");
+                }
+            })
+            .fail(function(error){
+                var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+                $("html").append(modal_msg);
+                $("#error-def").modal('show');
+                setTimeout(function() {
+                    $("#error-def").modal('hide');
+                    $("#error-def").remove();
+                }, 3000);
+            })
+            .always(function(){
+                $(document).on("click",".high-class",function(){
+                    var tempID = this.id;
+                    $(".highest_poll").fadeOut("slow");
+                    setTimeout(function(){
+                        PollDetail(tempID,"high");
+                    }, 1000);
+                });
+                $(document).on("click","#back_to_history_select",function () {
+                    $(".highest_poll").fadeOut("slow");
+                    setTimeout(function() {
+                        $(".ViewOrUpload").fadeIn("slow");
+                    }, 1000);
+                });
+                $(document).on("click","#refresh_highestPoll_data",function(){
+                    $(".highest_poll").empty();
+                    $(".highest_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                    setTimeout(function() {
+                        $(".highest_poll").empty();
+                        HighestPollBrowse("refresh");
+                    }, 2000);
+                });
+            });
+        }
+        else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
+            $(".highest_poll").fadeIn("slow");
+        }
     }
 });
