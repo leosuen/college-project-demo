@@ -4,25 +4,18 @@
 var HistoryfirstLoading = true;
 var HighestPollfirstLoading = true;
 var OtherPollfirstLoading = true;
-var getPollJSON = null;
+var getPollJSON = null;//catch json variable
 $(document).ready(function () {
-    
     //dropdown list dynamically
-    
     $("#personal-dropmenu").append("<li><a href='./uploadValidation.php'>當選提案審核</a></li>");
     $(document).on("click",".HistorySysOpen",function(e){
         e.preventDefault();
         chooseSectionToGo();
     });
-    
     //homepage pushstate
     $("#HomeIndex").click(function(e){
         e.preventDefault();
     });
-    
-    //catch json variable
-    
-    
     $(".TrizSystem").hide();
     $(".TrizSysOpen").click(function(){
         $(".thumbnail").fadeOut("slow");
@@ -50,70 +43,11 @@ $(document).ready(function () {
         $("#HistorySystem").fadeIn("slow");
         /*history area*/
         /*highest*/
-        
         /*other*/
-        
     }
-    
     //history system function area
-    
-    
     //POLL HANDLER AREA
-    
     //other
-    
-    
-    function queryTitle(strval,strclass){
-        var jsonsender = {"titleVal": strval,"searchClass": strclass};
-        $.ajax({
-            url: './historyphp/searchTitle.php',
-            type: 'POST',
-            data: {pollData:jsonsender},
-            datatype: 'json'
-        })
-        .done(function(data){
-            for(var i=0;i<data.length;i++){
-                $('.browse_panel').empty();
-                $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
-                    $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
-                        $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
-                        $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
-                            $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
-                            $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
-                            $('#footer'+data[i].ID+'').append('</div>');
-                        $('#'+data[i].ID+'').append('</div>');
-                        $('#'+data[i].ID+'').append('</div>');
-                    $('#'+data[i].ID+'').append('</div>');
-                $('.browse_panel').append('</div>');
-                $(".browse_panel").show();
-            }
-        })
-        .fail(function(error){
-            var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
-            $("html").append(modal_msg);
-            $("#error-def").modal('show');
-            setTimeout(function() {
-                $("#error-def").modal('hide');
-                $("#error-def").remove();
-            }, 3000);
-        })
-        .always(function(){
-            $(document).on("click",".browse-class",function () {
-                var temp = this.id;
-                $(".browse_panel").fadeOut("slow");
-                setTimeout(function() {
-                    HistoryDetail(temp);
-                }, 1000);
-            });
-            $(document).on("click","#back_to_history_select",function () {
-                $(".browse_panel").fadeOut("slow");
-                setTimeout(function() {
-                    $(".ViewOrUpload").fadeIn("slow");
-                }, 1000);
-            });
-        })
-    }
-    
 });
 //history area
 $(document).ready(function(){
@@ -141,9 +75,7 @@ $(document).ready(function(){
                 url: './historyphp/browse.php',
                 type: 'GET',
                 datatype: 'json'
-
             })
-            //.done will run after AJAX request
             .done(function(data) {
                 dataJSON = data ;
                 $('#browse-control').html("<div class='input-group col-xs-12 col-sm-12'><span class='input-group-addon'><i class='fa fa-search'aria-hidden='true'></i></span><input id='search_title' type='text' class='form-control' aria-describedby='basic-addon1'></div>");
@@ -246,6 +178,56 @@ $(document).ready(function(){
         });
     }
 });
+function queryTitle(strval,strclass){
+    var jsonsender = {"titleVal": strval,"searchClass": strclass};
+    $.ajax({
+        url: './historyphp/searchTitle.php',
+        type: 'POST',
+        data: {pollData:jsonsender},
+        datatype: 'json'
+    })
+    .done(function(data){
+        for(var i=0;i<data.length;i++){
+            $('.browse_panel').empty();
+            $('.browse_panel').append('<div id="'+data[i].ID+'" class="browse-class panel panel-default" value='+i+'>');
+                $('#'+data[i].ID+'').append('<div class="panel-heading" value='+data[i].ID+'>'+data[i].Title+'</div>');
+                    $('#'+data[i].ID+'').append('<div class="panel-body">'+data[i].Content+'</div>');
+                    $('#'+data[i].ID+'').append('<div id=footer'+data[i].ID+' class="panel-footer">');
+                        $('#footer'+data[i].ID+'').append('<div id=container'+data[i].ID+' class="container">');
+                        $('#container'+data[i].ID+'').append('<div class="col-xs-6 col-sm-6"><i class="fa fa-user fa-lg" aria-hidden="true"></i>'+ data[i].CompanyName +'</div><div class="col-xs-6 col-sm-6"><i class="fa fa-eye fa-lg" aria-hidden="true"></i>瀏覽</div>');
+                        $('#footer'+data[i].ID+'').append('</div>');
+                    $('#'+data[i].ID+'').append('</div>');
+                    $('#'+data[i].ID+'').append('</div>');
+                $('#'+data[i].ID+'').append('</div>');
+            $('.browse_panel').append('</div>');
+            $(".browse_panel").show();
+        }
+    })
+    .fail(function(error){
+        var modal_msg = '<div class="modal fade" id="error-def" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">錯誤訊息</h4></div><div class="modal-body"><p>'+error+'</p></div><div class="modal-footer"><div class="col-xs-12 col-sm-12">3秒後消失</div></div> </div></div></div>';
+        $("html").append(modal_msg);
+        $("#error-def").modal('show');
+        setTimeout(function() {
+            $("#error-def").modal('hide');
+            $("#error-def").remove();
+        }, 3000);
+    })
+    .always(function(){
+        $(document).on("click",".browse-class",function () {
+            var temp = this.id;
+            $(".browse_panel").fadeOut("slow");
+            setTimeout(function() {
+                HistoryDetail(temp);
+            }, 1000);
+        });
+        $(document).on("click","#back_to_history_select",function () {
+            $(".browse_panel").fadeOut("slow");
+            setTimeout(function() {
+                $(".ViewOrUpload").fadeIn("slow");
+            }, 1000);
+        });
+    })
+}
 //high area
 $(document).ready(function(){
     $(document).on("click","#highest_poll",function(){
