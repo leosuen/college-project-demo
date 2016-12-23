@@ -58,6 +58,29 @@ function errdisplay(error){
         $("#error-def").remove();
     }, 3000);
 }
+function doneRunning(string classvai){
+    var shorten = null;
+    if(classvai === "highest"){
+        shorten = high;
+    }
+    else{
+        shorten = other;
+    }
+    if(data.length >0){
+        for(var i=0;i<data.length;i++){
+            $('.'+classvai+'_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
+                $('#high-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
+                    $('#high-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
+
+                    $('#high-'+data[i].ID+'').append('</div>');
+                $('#high-'+data[i].ID+'').append('</div>');
+            $('.highest_poll').append('</div>');
+        }
+    }
+    else{
+        $('.highest_poll').append("NO DATA");
+    }
+}
 //history area
 $(document).ready(function(){
     var dataJSON = null ;
@@ -258,20 +281,7 @@ $(document).ready(function(){
             })
             .done(function(data){
                 getPollJSON = data;
-                if(data.length >0){
-                    for(var i=0;i<data.length;i++){
-                        $('.highest_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
-                            $('#high-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
-                                $('#high-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
-                                
-                                $('#high-'+data[i].ID+'').append('</div>');
-                            $('#high-'+data[i].ID+'').append('</div>');
-                        $('.highest_poll').append('</div>');
-                    }
-                }
-                else{
-                    $('.highest_poll').append("NO DATA");
-                }
+                doneRunning("highest");
             })
             .fail(function(error){
                 errdisplay(error);
