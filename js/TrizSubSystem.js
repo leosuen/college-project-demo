@@ -235,7 +235,6 @@ function queryTitle(strval,strclass){
         $("#error-def").modal('show');
         setTimeout(function() {
             $("#error-def").modal('hide');
-            $("#error-def").remove();
         }, 3000);
     })
     .always(function(){
