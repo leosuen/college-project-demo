@@ -480,7 +480,7 @@ $(document).ready(function () {
         five_when = $("#five_when").val();
         one_how = $("#one_how").val();
         ps_note = $("#ps_note").val();
-        checkTheFieldsBeforeSend(product,price,promotion,place,five_why,five_who,five_what,five_where,five_when,one_how,ps_note);
+        checkTheFieldsBeforeSend(product,price,promotion,place,five_why,five_who,five_what,five_where,five_when,one_how);
         sendPollJSON = {
             "emp_name": emp_name,
             "emp_id": emp_id,
