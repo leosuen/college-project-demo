@@ -118,23 +118,6 @@ $(document).ready(function () {
         }
     }
     
-    $(document).on("click","#vote-for",function(){
-        $("#testvalue").empty();
-        var testval = $('input[name="pollradio"]:checked').val();
-        $("#testvalue").append("第"+testval+"個提案");
-        if(testval === null){
-            $("#not_selected").modal();
-        }
-        else{
-            $("#check_for_vote").modal();
-        }
-    });
-    
-    $(document).on("click","#yes_to_vote",function(){
-        var sendval = $('input[name="pollradio"]:checked').val();
-        $("#check_for_vote").modal("hide");
-        addVote(sendval);
-    })
     
     function readThePollDetail(pollstring){
         var id = pollstring;
@@ -166,6 +149,27 @@ $(document).ready(function () {
         });
     }
     
+    
+});
+
+$(document).ready(function(){
+    $(document).on("click","#vote-for",function(){
+        $("#testvalue").empty();
+        var testval = $('input[name="pollradio"]:checked').val();
+        $("#testvalue").append("第"+testval+"個提案");
+        if(testval === null){
+            $("#not_selected").modal();
+        }
+        else{
+            $("#check_for_vote").modal();
+        }
+    });
+    
+    $(document).on("click","#yes_to_vote",function(){
+        var sendval = $('input[name="pollradio"]:checked').val();
+        $("#check_for_vote").modal("hide");
+        addVote(sendval);
+    });
     function addVote(sendval){
         var sendJSON = {"pollid": sendval}
         $.ajax({
@@ -196,4 +200,4 @@ $(document).ready(function () {
             $("#poll-list").empty();
         });
     }
-})
+});

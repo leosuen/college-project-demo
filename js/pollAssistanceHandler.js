@@ -1,5 +1,6 @@
 $(document).ready(function () {
     //Global variables
+    var adjustData = null;
     getCurrentDate();
     $(".note-area").removeProp("required");
     
@@ -332,34 +333,29 @@ $(document).ready(function () {
                             $("#4p-product-body #product1 .list-group").append("<li>3.增加產品的分割程度。<br>例如：從相機分割出來的鏡頭，又可以依據功能分割成不同的鏡頭，有魚眼鏡頭、超廣角鏡頭等。</li>");
                         $("#4p-product-body #product1").append("</ul>");
                     $("#4p-product-body").append("</div>");
-        
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product2' class='btn btn-default btn-block'>2.多重功能(Universality)</button>");
                     $("#4p-product-body").append("<div id='product2' class='panel-collapse collapse'>");
                         $("#4p-product-body #product2").append("<ul class='list-group'>");
                             $("#4p-product-body #product2 .list-group").append("<li>1.使產品有多重功能，以減少對其他產品的需求。<br>例如一：ibon提供多重服務，包括訂購票券、繳費、列印等服務。<br>例如二：Apple Watch將手錶結合通話、上網、運動手環等多重功能。</li>");
                         $("#4p-product-body #product2").append("</ul>");
                     $("#4p-product-body .list-group").append("</div>");
-        
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product3' class='btn btn-default btn-block'>4.反向操作(The Other Way Round)</button>");
                     $("#4p-product-body").append("<div id='product3' class='panel-collapse collapse'>");
                         $("#4p-product-body #product3").append("<ul class='list-group'>");
                             $("#4p-product-body #product3 .list-group").append("<li>1.用相反的作用將產品反轉。<br>例如：穆罕默德‧尤努斯創辦鄉村銀行，顛覆傳統銀行的運作模式，他獨創小額信貸給窮人，少了傳統銀行貸款的限制，只要求借款人努力工作還款，創造驚人的高還款率，在創立不到三年就獲利1500萬美元。</li>");
                         $("#4p-product-body #product3").append("</ul>")
                     $("#4p-product-body").append("</div>");
-
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product4' class='btn btn-default btn-block'>7.回饋(Feedback)</button>");
                     $("#4p-product-body").append("<div id='product4' class='panel-collapse collapse'>");
                         $("#4p-product-body #product4").append("<ul class='list-group'>");
                             $("#4p-product-body #product4 .list-group").append("<li>1.採取回饋制度。<br>例如：建立回饋制度是產品策略的一環，客戶投訴和建議制度可以用來改善產品策略。<br>2.若回饋制度已經存在，則改變回饋的大小和方向。<br>例如：從接收客戶回饋改變成回饋給社會，TOMS每賣出一雙鞋，將會提供一雙全新免費的鞋子給需要的孩童(One for One)的方式回饋社會，同時也達到促銷的作用，建立良好的企業形象。</li>");
                     $("#4p-product-body").append("</div>");
-                    
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product5' class='btn btn-default btn-block'>8.改變顏色(Color Change)</button>");
                     $("#4p-product-body").append("<div id='product5' class='panel-collapse collapse'>");
                         $("#4p-product-body #product5").append("<ul class='list-group'>");
                             $("#4p-product-body #product5 .list-group").append("<li>1.改變產品或周遭的顏色。<br>例如：iPhone5推出玫瑰金色，造成全球轟動。<br>2.改變產品資訊之透明度。<br>例如：透過產銷履歷可以直接了解產品原料來源，讓客戶更清楚產品的資訊。</li>");
                         $("#4p-product-body #product5").append("</ul>");
                     $("#4p-product-body ").append("</div>");
-        
                     $("#4p-product-body").append("<button data-toggle='collapse' href='#product6' class='btn btn-default btn-block'>9.複合材料(Composite Materials)</button>");
                     $("#4p-product-body").append("<div id='product6' class='panel-collapse collapse'>");
                         $("#4p-product-body #product6").append("<ul class='list-group'>");
@@ -368,7 +364,6 @@ $(document).ready(function () {
                     $("#4p-product-body").append("</div>");
                 $("#4p-product").append("</div>");
             $("#accordion").append("</div>");
-        
             $("#accordion").append("<div id='4p-price' class='panel panel-default'>");
                 $("#4p-price").append("<div class='panel-heading text-center' data-toggle='collapse' data-parent='#accordion' href='#4p-price-body'>可運用於價格創新行銷的TRIZ方法");
                 $("#4p-price").append("</div>");
@@ -379,14 +374,12 @@ $(document).ready(function () {
                             $("#4p-price-body #price1 .list-group").append("<li>1.預先導入有用的作用到價格中。<br>例如：產品推出前事先調查同類產品的平均市售價格，以制訂出最適合的產品價格。</li>");
                         $("#4p-price-body #price1").append("</ul>");
                     $("#4p-price-body").append("</div>");
-        
                     $("#4p-price-body").append("<button data-toggle='collapse' href='#price2' class='btn btn-default btn-block'>5.動態化(Dynamics)</button>");
                     $("#4p-price-body").append("<div id='price2' class='panel-collapse collapse'>");
                         $("#4p-price-body #price2").append("<ul class='list-group'>");
                             $("#4p-price-body #price2 .list-group").append("<li>1.在不同條件下，價格能改變至最佳的狀態。<br>例如：產品的價格會因為環境因素(原物料上漲)而改變。</li>");
                         $("#4p-price-body #price2").append("</ul>");
                     $("#4p-price-body").append("</div>");
-        
                     $("#4p-price-body").append("<button data-toggle='collapse' href='#price3' class='btn btn-default btn-block'>6.週期性(Periodic Action)</button>");
                     $("#4p-price-body").append("<div id='price3' class='panel-collapse collapse'>");
                         $("#4p-price-body #price3").append("<ul class='list-group'>");
@@ -394,7 +387,6 @@ $(document).ready(function () {
                             $("#4p-price-body #price3 .list-group").append("<li>2.若已是週期性價格，增加週期性的頻率。<br>例如：增加優惠促銷活動的次數。</li>");
                         $("#4p-price-body #price3").append("</ul>");
                     $("#4p-price-body").append("</div>");
-        
                     $("#4p-price-body").append("<button data-toggle='collapse' href='#price4' class='btn btn-default btn-block'>8.改變顏色(Color Change)</button>");
                     $("#4p-price-body").append("<div id='price4' class='panel-collapse collapse'>");
                         $("#4p-price-body #price4").append("<ul class='list-group'>");
@@ -403,11 +395,9 @@ $(document).ready(function () {
                     $("#4p-price-body").append("</div>");
                 $("#4p-price").append("</div>");
             $("#accordion").append("</div>");
-        
             $("#accordion").append("<div id='4p-propmotion' class='panel panel-default'>");
                 $("#4p-propmotion").append("<div class='panel-heading text-center' data-toggle='collapse' data-parent='#accordion' href='#4p-promotion-body'>可運用於促銷創新行銷的TRIZ方法");
                 $("#4p-propmotion").append("</div>");
-        
                 $("#4p-propmotion").append("<div id='4p-promotion-body' class='panel-collapse collapse'>");
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion1' class='btn btn-default btn-block'>1.分割(Segmentation)</button>");
                     $("#4p-promotion-body").append("<div id='promotion1' class='panel-collapse collapse'>");
@@ -416,14 +406,12 @@ $(document).ready(function () {
                             $("#4p-promotion-body #promotion1 .list-group").append("<li>2.增加促銷的分割程度。<br>例如：從Facebook根據不同用戶發送的廣告中，再分割為不同時段或季節發送不同的廣告。</li>");
                         $("#4p-promotion-body #promotion1").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
-        
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion2' class='btn btn-default btn-block'>2.多重功能(Universality)</button>");
                     $("#4p-promotion-body").append("<div id='promotion2' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion2").append("<ul class='list-group'>");
                             $("#4p-promotion-body #promotion2 .list-group").append("<li>1.使促銷有多重功能，以減少對其他促銷的需求。<br>例如：TOMS每賣出一雙鞋，將會提供一雙全新免費的鞋子給需要的孩童(One for One)的促銷策略有多重功能，除了提升銷售業績之外，也提升了企業形象。</li>");
                         $("#4p-promotion-body #promotion2").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
-        
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion3' class='btn btn-default btn-block'>3.預先行動(Prior Action)</button>");
                     $("#4p-promotion-body").append("<div id='promotion3' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion3").append("<ul class='list-group'>");
@@ -431,7 +419,6 @@ $(document).ready(function () {
                             $("#4p-promotion-body #promotion3 .list-group").append("<li>2.預先導入有用的作用到通路中。<br>例如：事先與通路商簽約，保障銷售時的通路。</li>");
                         $("#4p-promotion-body #promotion3").append("</ul>");
                     $("#4p-promotion-body").append("</div>");
-        
                     $("#4p-promotion-body").append("<button data-toggle='collapse' href='#promotion4' class='btn btn-default btn-block'>7.回饋(Feedback)</button>");
                     $("#4p-promotion-body").append("<div id='promotion4' class='panel-collapse collapse'>");
                         $("#4p-promotion-body #promotion4").append("<ul class='list-group'>");
@@ -440,7 +427,6 @@ $(document).ready(function () {
                     $("#4p-promotion-body").append("</div>");
                 $("#4p-propmotion").append("</div>");
             $("#accordion").append("</div>");
-        
             $("#accordion").append("<div id='4p-place' class='panel panel-default'>");
                 $("#4p-place").append("<div class='panel-heading text-center' data-toggle='collapse' data-parent='#accordion' href='#4p-place-body'>可運用於通路創新行銷的TRIZ方法");
                 $("#4p-place").append("</div>");
@@ -514,7 +500,7 @@ $(document).ready(function () {
         doTheSendProcedure(OKtoSend);
     });
     
-    function checkTheFieldsBeforeSend(product,price,promotion,place,five_why,five_who,five_what,five_where,five_when,one_how,ps_note){
+    function checkTheFieldsBeforeSend(product,price,promotion,place,five_why,five_who,five_what,five_where,five_when,one_how){
         if(product === "" || price === "" || promotion === "" || place === "" || five_why === "" || five_who === "" || five_what === "" || five_where === "" || five_when === "" || one_how === ""){
             OKtoSend = "NO";
             if(product === ""){

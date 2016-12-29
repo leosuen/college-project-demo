@@ -17,10 +17,7 @@ $(document).ready(function(){
                 getHighestPollbutNotCertificate("firsttime");
             }
             else{
-                $("#title01").remove();
-                $("#wait-abs").remove();
-                $("#waitToCertificate").remove();
-                $(".modal").remove();
+                $("#title01").remove();$("#wait-abs").remove();$("#waitToCertificate").remove();$(".modal").remove();
                 $("#msg").html("你不是本周的提案當選人，或者你已經審核過了。");
             }
         })
