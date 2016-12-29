@@ -33,7 +33,7 @@ $(document).ready(function () {
     function chooseSectionToGo(){
         $(".browse_panel").empty();
         $(".TrizSystem").fadeOut("slow");
-        $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
+        $("#all_view").html('<div class="col-xs-12 col-sm-3"><button id="view_example" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢其他公司案例</button></div>');
         $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="upload_example" class="btn btn-default btn-lg btn-block ViewOrUpload">上傳其他公司案例</button></div>');
         $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="highest_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢採用提案單</button></div>');
         $("#all_view").append('<div class="col-xs-12 col-sm-3"><button id="other_poll" class="btn btn-default btn-lg btn-block ViewOrUpload">查詢提案單</button></div>');
@@ -58,14 +58,7 @@ function errdisplay(error){
         $("#error-def").remove();
     }, 3000);
 }
-function doneRunning(classvai){
-    var shorten = null;
-    if(classvai === "highest"){
-        shorten = high;
-    }
-    else{
-        shorten = other;
-    }
+function doneRunning(classvai,data){
     if(data.length >0){
         for(var i=0;i<data.length;i++){
             $('.'+classvai+'_poll').append('<div id="high-'+data[i].ID+'" class="panel panel-default high-class" value='+i+'>');
@@ -269,50 +262,7 @@ $(document).ready(function(){
             }
         }, 1000);
     });
-    function HighestPollBrowse(ajaxrel){
-        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
-            $(".highest_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-            $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
-            $.ajax({
-                url: './historyphp/getHighestPoll.php',
-                type: 'GET',
-                datatype: 'json'
-            })
-            .done(function(data){
-                getPollJSON = data;
-                doneRunning("highest");
-            })
-            .fail(function(error){
-                errdisplay(error);
-            })
-            .always(function(){
-                $(document).on("click",".high-class",function(){
-                    var tempID = this.id;
-                    $(".highest_poll").fadeOut("slow");
-                    setTimeout(function(){
-                        PollDetail(tempID,"high");
-                    }, 1000);
-                });
-                $(document).on("click","#back_to_history_select",function () {
-                    $(".highest_poll").fadeOut("slow");
-                    setTimeout(function() {
-                        $(".ViewOrUpload").fadeIn("slow");
-                    }, 1000);
-                });
-                $(document).on("click","#refresh_highestPoll_data",function(){
-                    $(".highest_poll").empty();
-                    $(".highest_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
-                    setTimeout(function() {
-                        $(".highest_poll").empty();
-                        HighestPollBrowse("refresh");
-                    }, 2000);
-                });
-            });
-        }
-        else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
-            $(".highest_poll").fadeIn("slow");
-        }
-    }
+    
 });
 //other area
 $(document).ready(function(){
@@ -331,7 +281,53 @@ $(document).ready(function(){
         }, 1000);
     });
     
-    function OtherPollBrowse(ajaxrel){
+    
+});
+function HighestPollBrowse(ajaxrel){
+    if(ajaxrel === "firstload" || ajaxrel === "refresh"){
+        $(".highest_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+        $(".highest_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_highestPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+        $.ajax({
+            url: './historyphp/getHighestPoll.php',
+            type: 'GET',
+            datatype: 'json'
+        })
+        .done(function(data){
+            getPollJSON = data;
+            doneRunning("highest",data);
+        })
+        .fail(function(error){
+            errdisplay(error);
+        })
+        .always(function(){
+            $(document).on("click",".high-class",function(){
+                var tempID = this.id;
+                $(".highest_poll").fadeOut("slow");
+                setTimeout(function(){
+                    PollDetail(tempID,"high");
+                }, 1000);
+            });
+            $(document).on("click","#back_to_history_select",function () {
+                $(".highest_poll").fadeOut("slow");
+                setTimeout(function() {
+                    $(".ViewOrUpload").fadeIn("slow");
+                }, 1000);
+            });
+            $(document).on("click","#refresh_highestPoll_data",function(){
+                $(".highest_poll").empty();
+                $(".highest_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                setTimeout(function() {
+                    $(".highest_poll").empty();
+                    HighestPollBrowse("refresh");
+                }, 2000);
+            });
+        });
+    }
+    else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
+        $(".highest_poll").fadeIn("slow");
+    }
+}
+function OtherPollBrowse(ajaxrel){
         if(ajaxrel === "firstload" || ajaxrel === "refresh"){
             $(".other_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
             $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
@@ -386,8 +382,6 @@ $(document).ready(function(){
             $(".other_poll").fadeIn("slow");
         }
     }
-});
-
 function PollDetail(strid,strClass){
     var getid = strid;
     var getClass = strClass;
