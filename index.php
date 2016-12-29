@@ -1,7 +1,7 @@
 <?php
 session_start();
-$emp = 'user_session';
-if(!isset($_SESSION[$emp]))
+$emp = $_SESSION['user_session'];
+if(!isset($emp)
 {
     header("Location: welcome.php");
 }
@@ -40,7 +40,7 @@ if(!isset($_SESSION[$emp]))
 	<script type="text/javascript" src="./js/dateHandler.js"></script>
 	<script type="text/javascript" src="./js/systemDescription.js"></script>
 	<script>
-        var pos = <?php echo json_encode($_SESSION['user_position']) ?>; //IGNORE LEFT WRONG SIGN
+        var pos = <?php echo json_encode($emp) ?>; //IGNORE LEFT WRONG SIGN
         $(document).ready(function(){
            $("#loading-message").hide();
         });
@@ -142,13 +142,13 @@ if(!isset($_SESSION[$emp]))
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="emp_name">員工姓名</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="emp_name" value="<?php echo $_SESSION['username_position'] ?>">
+                        <input type="text" class="form-control" id="emp_name" value="<?php echo $_SESSION['username_position']; ?>">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="emp_id">員工編號</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="emp_id" value="<?php echo $_SESSION['user_session'] ?>">
+                        <input type="text" class="form-control" id="emp_id" value="<?php echo $emp; ?>">
                     </div>
                 </div>
                 <div class="form-group">
@@ -290,13 +290,13 @@ if(!isset($_SESSION[$emp]))
                 <div class="form-group">
 	                <label class="control-label col-sm-2" for="emp_name">姓名</label>
 	                <div class="col-sm-10">
-	                    <input type="text" class="form-control" name="emp_name" value="<?php echo $_SESSION['username_position'] ?>">
+	                    <input type="text" class="form-control" name="emp_name" value="<?php echo $_SESSION['username_position']; ?>">
 	                </div>
 	            </div>
                 <div class="form-group">
 	                <label class="control-label col-sm-2" for="emp_id">編號</label>
 	                <div class="col-sm-10">
-	                    <input type="text" class="form-control" name="emp_id" value="<?php echo $_SESSION['user_session'] ?>">
+	                    <input type="text" class="form-control" name="emp_id" value="<?php echo $emp; ?>">
 	                </div>
 	            </div>
                 <div class="form-group">
