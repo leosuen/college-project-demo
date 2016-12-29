@@ -1,7 +1,7 @@
 <?php
 session_start();
 $emp = $_SESSION['user_session'];
-if(!isset($emp)
+if(!isset($emp))
 {
     header("Location: welcome.php");
 }

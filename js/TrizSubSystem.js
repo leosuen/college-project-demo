@@ -58,7 +58,7 @@ function errdisplay(error){
         $("#error-def").remove();
     }, 3000);
 }
-function doneRunning(string classvai){
+function doneRunning(classvai){
     var shorten = null;
     if(classvai === "highest"){
         shorten = high;
