@@ -262,7 +262,6 @@ $(document).ready(function(){
             }
         }, 1000);
     });
-    
 });
 //other area
 $(document).ready(function(){
@@ -280,8 +279,6 @@ $(document).ready(function(){
             }
         }, 1000);
     });
-    
-    
 });
 function HighestPollBrowse(ajaxrel){
     if(ajaxrel === "firstload" || ajaxrel === "refresh"){
@@ -328,60 +325,60 @@ function HighestPollBrowse(ajaxrel){
     }
 }
 function OtherPollBrowse(ajaxrel){
-        if(ajaxrel === "firstload" || ajaxrel === "refresh"){
-            $(".other_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
-            $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
-            $.ajax({
-                url: './historyphp/getOtherPoll.php',
-                type: 'GET',
-                datatype: 'json'
-            })
-            .done(function(data){
-                getPollJSON = data;
-                if(data != null){
-                    for(var i=0;i<data.length;i++){
-                        $('.other_poll').append('<div id="other-'+data[i].ID+'" class="panel panel-default other-class" value='+i+'>');
-                            $('#other-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
-                                $('#other-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
-                            $('#other-'+data[i].ID+'').append('</div>');
-                        $('.other_poll').append('</div>');
-                    }
+    if(ajaxrel === "firstload" || ajaxrel === "refresh"){
+        $(".other_poll").html("<div class='col-sm-6 col-xs-6'><button id='back_to_history_select' class='btn btn-default btn-block'><i class='fa fa-history' aria-hidden='true'></i>  回上頁</button></div>");
+        $(".other_poll").append("<div class='col-sm-6 col-xs-6'><button id='refresh_OtherPoll_data' class='btn btn-default btn-block'><i class='fa fa-refresh' aria-hidden='true'></i>  重新整理</button></div><br><br><br>");
+        $.ajax({
+            url: './historyphp/getOtherPoll.php',
+            type: 'GET',
+            datatype: 'json'
+        })
+        .done(function(data){
+            getPollJSON = data;
+            if(data != null){
+                for(var i=0;i<data.length;i++){
+                    $('.other_poll').append('<div id="other-'+data[i].ID+'" class="panel panel-default other-class" value='+i+'>');
+                        $('#other-'+data[i].ID+'').append('<div class="panel-heading">'+data[i].Name+'的提案</div>');
+                            $('#other-'+data[i].ID+'').append('<div class="panel-body">點擊此處觀看詳細資訊</div>');
+                        $('#other-'+data[i].ID+'').append('</div>');
+                    $('.other_poll').append('</div>');
                 }
-                else{
-                    $('.other_poll').append("NO DATA");
-                }
-            })
-            .fail(function(error){
-                errdisplay(error);
-            })
-            .always(function(){
-                $(document).on("click",".other-class",function(){
-                    var tempID = this.id;
-                    $(".other_poll").fadeOut("slow");
-                    setTimeout(function(){
-                        PollDetail(tempID,"other");
-                    },1000);
-                });
-                $(document).on("click","#back_to_history_select",function () {
-                    $(".other_poll").fadeOut("slow");
-                    setTimeout(function() {
-                        $(".ViewOrUpload").fadeIn("slow");
-                    }, 1000);
-                });
-                $(document).on("click","#refresh_OtherPoll_data",function(){
-                    $(".other_poll").empty();
-                    $(".other_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
-                    setTimeout(function() {
-                        $(".other_poll").empty();
-                        OtherPollBrowse("refresh");
-                    }, 2000);
-                });
+            }
+            else{
+                $('.other_poll').append("NO DATA");
+            }
+        })
+        .fail(function(error){
+            errdisplay(error);
+        })
+        .always(function(){
+            $(document).on("click",".other-class",function(){
+                var tempID = this.id;
+                $(".other_poll").fadeOut("slow");
+                setTimeout(function(){
+                    PollDetail(tempID,"other");
+                },1000);
             });
-        }
-        else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
-            $(".other_poll").fadeIn("slow");
-        }
+            $(document).on("click","#back_to_history_select",function () {
+                $(".other_poll").fadeOut("slow");
+                setTimeout(function() {
+                    $(".ViewOrUpload").fadeIn("slow");
+                }, 1000);
+            });
+            $(document).on("click","#refresh_OtherPoll_data",function(){
+                $(".other_poll").empty();
+                $(".other_poll").html("<div class='text-center'><i class='fa fa-refresh fa-spin fa-3x fa-fw'></i></div>");
+                setTimeout(function() {
+                    $(".other_poll").empty();
+                    OtherPollBrowse("refresh");
+                }, 2000);
+            });
+        });
     }
+    else if(ajaxrel === "fromDetail" || ajaxrel === "loaded"){
+        $(".other_poll").fadeIn("slow");
+    }
+}
 function PollDetail(strid,strClass){
     var getid = strid;
     var getClass = strClass;
