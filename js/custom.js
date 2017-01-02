@@ -115,7 +115,7 @@
 
 	// Loading
 	//----------------------------------------------
-  function remove_loading($form)
+  /*function remove_loading($form)
   {
   	$form.find('[type=submit]').removeClass('error success');
   	$form.find('.login-form-main-message').removeClass('show error success').html('');
@@ -136,7 +136,7 @@
   {
   	$form.find('[type=submit]').addClass('error').html(options['btn-error']);
   	$form.find('.login-form-main-message').addClass('show error').html(options['msg-error']);
-  }
+  }*/
 
 	// Dummy Submit Form (Remove this)
 	//----------------------------------------------
