@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    var pollData = null;
-    var pollcount = 0;
-    
     $(document).on("click",".ProjectScoreSysOpen",function(e){
         e.preventDefault();
         $(".TrizSystem").fadeOut("slow");
@@ -19,6 +16,8 @@ $(document).ready(function () {
         readThePollDetail();
     });
 });
+var pollData = null;
+var pollcount = 0;
 function beforeToDo(){
     var obj = null;
     var inputValue = null;
