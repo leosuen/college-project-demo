@@ -112,34 +112,5 @@
   	  return false;
 		}
   });
-  /* login submit */
-  function submitForm1($form)
-  {  
-    var data = $("#login-form").serialize();
-  
-    $.ajax({
-      type : 'POST',
-      url  : 'login.php',
-      data : data,
-      beforeSend: function(){ 
-        $("#message").fadeOut();
-        $("#message").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
-      },
-      success :  function(response){
-        if(response === "ok"){
-          $("#message").html(' &nbsp; Signing In ...');
-          setTimeout(' window.location.href = "index.php"; ',1000);
-        }
-        else{
-          $("#message").fadeIn(1000, function(){
-          $("#message").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; '+response+' !</div>');
-          $("#btn-login").html('<span class="glyphicon glyphicon-log-in"></span> &nbsp; Sign In');
-        });
-        }
-      }
-    });
-    return false;
-  }
-  /* login submit */
 	
 })(jQuery);
