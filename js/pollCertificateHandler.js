@@ -2,11 +2,11 @@ $(document).ready(function(){
     var firstload = true;
     var JSONcontainer = null;
     var certval = null;
-    identifyTheHuman(human);
+    identifyTheHuman();
     
     $("div:first").load("navbar.php");
     
-    function identifyTheHuman(human){
+    function identifyTheHuman(){
         $.ajax({
             url: './pollphp/checkHuman.php',
             type: 'GET',

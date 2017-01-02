@@ -12,8 +12,6 @@
 
 		try{
 			$sql_acc = "SELECT e.ID AS 'ID',e.Password AS 'Password',e.Name AS 'name',p.Name AS 'position' FROM triz_emp e LEFT JOIN triz_pos p ON e.PosID = p.ID WHERE e.ID LIKE '$account' AND e.Password LIKE '$password'";
-			/*$stmt = $conn->query($sql_acc);
-			$result_arr = $stmt -> fetch();*/
             
             $stmt = $conn->prepare($sql_acc);
             $stmt->execute();
